@@ -1,0 +1,69 @@
+<div class="card card-form">
+    <div class="item">
+        <h2 class="form-title">Question:</h2>
+        <label class="item item-input">
+            <textarea rows="3" ng-model="question.title"></textarea>
+        </label>
+    </div>
+    <div class="item">
+        <h2 class="form-title">Choices:</h2>
+        <ion-list show-delete="options.editing" show-reorder="options.editing">
+            <ion-item ng-repeat="choice in question.choices"
+                      item="item"
+                      class="item-remove-animate item-text-wrap">
+                {{ $index + 1 }}) {{choice.text}}
+                <ion-delete-button class="ion-minus-circled"
+                                   ng-click="onChoiceDelete(choice)">
+                </ion-delete-button>
+                <ion-reorder-button class="ion-navicon"
+                                    on-reorder="moveChoice(choice, $fromIndex, $toIndex)"></ion-reorder-button>
+            </ion-item>
+        </ion-list>
+        <label class="item item-input">
+            <textarea type="text" rows="3" ng-model="newChoice.text" placeholder="Choice"></textarea>
+        </label>
+        <button class="button button-calm button-clear icon-left pull-right ion-ios-plus-empty question-button-bar"
+                ng-click="addChoice()">Add Choice
+        </button>
+    </div>
+    <div class="item">
+        <ul class="list">
+            <li class="item item-toggle">
+                Required
+                <label class="toggle toggle-energized">
+                    <input type="checkbox" ng-model="question.required">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+            <li class="item item-toggle">
+                Multiple Selections
+                <label class="toggle toggle-energized">
+                    <input type="checkbox" ng-model="question.multipleSelections">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+            <li class="item item-toggle">
+                Randomize
+                <label class="toggle toggle-energized">
+                    <input type="checkbox" ng-model="question.randomize">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+            <li class="item item-toggle">
+                Add "Other" option
+                <label class="toggle toggle-energized">
+                    <input type="checkbox" ng-model="question.otherOption">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+        </ul>
+    </div>
+</div>

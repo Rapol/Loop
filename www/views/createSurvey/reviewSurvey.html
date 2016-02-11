@@ -1,0 +1,88 @@
+<ion-view title="Review Survey" xmlns="http://www.w3.org/1999/html">
+    <ion-nav-bar class="bar-calm">
+        <ion-nav-buttons side="left">
+            <button ng-click="exitSurvey()" class="button button-clear button-icon ion-android-close"></button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <div class="bar bar-stable bar-footer big-bar-footer">
+        <div class="button-bar">
+            <button class="button button-energized" ng-click="addQuestion()">Add Question</button>
+            <button class="button button-calm" ng-click="sendSurvey()">Send</button>
+        </div>
+    </div>
+    <ion-content class="padding has-big-bar-footer">
+        <div class="card card-form">
+            <div class="item clickable-divider item-icon-right" ui-sref="editSurveyInfo">
+                Survey Info
+                <i class="icon ion-arrow-right-c"></i>
+            </div>
+            <div class="item item-body survey-info">
+
+                <div class="row">
+                    <div class="col"><h2 class="form-title text-right">Name:</h2></div>
+                    <div class="col col-67">
+                        <p>{{surveyInfo.surveyName}}</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col"><h2 class="form-title text-right">Description:</h2></div>
+                    <div class="col col-67">
+                        <p>{{surveyInfo.description}}</p>
+
+                        <p ng-if="!surveyInfo.description">None</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col"><h2 class="form-title text-right">Loops:</h2></div>
+                    <div class="col col-67">
+                        <p>
+                            <span ng-repeat="loop in surveyInfo.loopsAssign">{{loop.name}}<span
+                                    ng-if="$index + 1 != surveyInfo.loopsAssign.length">,</span>
+                        </span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col"><h2 class="form-title text-right">Attributes:</h2></div>
+                    <div class="col col-67">
+                        <p>
+                            <span ng-repeat="attribute in surveyInfo.attributesAssign"
+                                  ng-class="{'bold': attribute.required}">{{attribute.name}}<span
+                                    ng-if="$index + 1 != surveyInfo.attributesAssign.length">, </span>
+                            </span>
+                        </p>
+
+                        <p ng-if="surveyInfo.attributesAssign.length == 0">None</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="item clickable-divider item-icon-right" ng-click="options.editing = !options.editing ">
+                Questions
+                <i class="icon ion-edit"></i>
+            </div>
+            <ion-list show-delete="options.editing" show-reorder="options.editing">
+                <ion-item ng-repeat="question in questions"
+                          item="item"
+                          class="item-remove-animate item-text-wrap" ui-sref="editQuestion({questionNumber: $index})">
+                    <div class="review-item">
+                        <h2 ng-class="{'require': question.required}"><span class="circle-number">{{$index + 1}}</span>{{question.title}}
+                        </h2>
+                        <div ng-switch="question.questionType">
+                            <review-text-box ng-switch-when="textBox" question="question"></review-text-box>
+                            <review-ranking ng-switch-when="ranking" question="question"></review-ranking>
+                            <review-multiple-choice ng-switch-when="multipleChoice" question="question"></review-multiple-choice>
+                            <review-slider-scale ng-switch-when="sliderScale" question="question"></review-slider-scale>
+                            <review-number-box ng-switch-when="numberBox" question="question"></review-number-box>
+                        </div>
+                        <ion-delete-button class="ion-minus-circled" ng-click="onQuestionDelete(question)"></ion-delete-button>
+                        <ion-reorder-button class="ion-navicon" on-reorder="moveQuestion(question, $fromIndex, $toIndex)"></ion-reorder-button>
+                    </div>
+                </ion-item>
+            </ion-list>
+        </div>
+    </ion-content>
+</ion-view>

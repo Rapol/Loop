@@ -1,0 +1,59 @@
+<ion-view view-title="Profile">
+    <ion-content ng-class="{'has-footer' : platform != 'android'}" delegate-handle="mainScroll">
+        <ion-slide-box class="profile-header" on-slide-changed="slideHasChanged($index)">
+            <ion-slide>
+                <div id="profile-slide-home">
+                    <img class="circle-border" src="img/30rock.jpg">
+
+                    <h3>John Cena</h3>
+
+                    <p>Age 22 &middot Sex M</p>
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="profile-slide-info padding">
+                    <p>Email: john@cena</p>
+
+                    <p>Phone: 787-471-1245</p>
+
+                    <p>Race: White</p>
+
+                    <p>School: Georgia Tech</p>
+                </div>
+            </ion-slide>
+            <ion-slide>
+                <div class="profile-slide-info padding">
+                    <p>Living in House: Yes</p>
+
+                    <p>Meal Plan: Full Meal Plan</p>
+                </div>
+            </ion-slide>
+        </ion-slide-box>
+        <div class="main-nav nav-padding">
+            <ul>
+                <li ng-class="{active:isActiveTab(profileInfo[0].title)}"
+                    ng-click="onClickTab(profileInfo[0])">
+                    <div>
+                        <h4>12</h4>
+                        <p>Surveys Sent</p>
+                    </div>
+                </li>
+                <li ng-class="{active:isActiveTab(profileInfo[1].title)}"
+                    ng-click="onClickTab(profileInfo[1])">
+                    <div>
+                        <h4>21</h4>
+                        <p>Surveys Received</p>
+                    </div>
+                </li>
+                <li ng-class="{active:isActiveTab(profileInfo[2].title)}"
+                    ng-click="onClickTab(profileInfo[2])">
+                    <div>
+                        <h4>5</h4>
+                        <p>Loops Subscribed</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div ng-include="currentList.url"></div>
+    </ion-content>
+</ion-view>

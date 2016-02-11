@@ -1,0 +1,85 @@
+<ion-view view-title="Home" hide-back-button="true">
+    <ion-nav-buttons side="left">
+        <button class="button button-clear" ui-sref="app.search" ng-if="platform!='android'">
+            <span class="icon ion-search"></span>
+        </button>
+        <button class="button button-clear" menu-toggle="left" ng-if="platform=='android'">
+            <span class="icon ion-navicon"></span>
+        </button>
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ui-sref="app.createSurvey">
+            <span class="icon ion-plus-circled"></span>
+        </button>
+    </ion-nav-buttons>
+    <div class="bar bar-subheader">
+        <div class="button-bar">
+            <button class="button button-clear button-calm  icon-left" ng-click="typeButton()"
+                    ng-class="type[typeIndex].icon"><span class="energized nav-weight">{{type[typeIndex].name}}</span></button>
+            <button class="button button-clear button-calm  icon-left" ng-click="locationButton()"
+                    ng-class="location[locationIndex].icon"><span
+                    class="energized nav-weight">{{location[locationIndex].name}}</span></button>
+            <button class="button button-clear button-calm  icon-left" ng-click="popularityButton()"
+                    ng-class="popularity[popularityIndex].icon"><span class="energized nav-weight">{{popularity[popularityIndex].name}}</span>
+            </button>
+        </div>
+    </div>
+    <ion-content class="has-subheader" ng-class="{'has-footer' : platform != 'android'}">
+        <div class="list card" ng-repeat="survey in createdSurveys">
+            <div class="item item-avatar item-header-padding avatar-centralized avatar-large" ui-sref="surveyFlow({surveyId: $index})">
+                <img src="img/blueOnWhiteLogo.png">
+                <div class="item-header-text">
+                    <h2>{{survey.surveyName}}</h2>
+
+                    <h3>{{survey.loopsAssign[0].name}}</h3>
+
+                    <p>Me</p>
+                </div>
+                <div class="item-header-stats text-center">
+                    <button class="button button-medium button-clear">
+                        <i class="fa fa-pie-chart fa-lg calm"></i>
+                    </button>
+                    <p><i class="icon ion-ios-checkmark-outline icon-inline-padding"></i>0
+                    </p>
+                </div>
+            </div>
+            <div class="item item-body item-body-survey">
+                <p ng-if="survey.description">
+                    {{survey.description}}
+                </p>
+                <p ng-if="survey.description == ''">
+                    {{survey.questions[0].title}}
+                </p>
+                <span class="badge badge-energized">0</span>
+                <p>1 minutes ago &middot; Atlanta, GA</p>
+            </div>
+        </div>
+        <div class="list card" ng-repeat="survey in surveys">
+            <div class="item item-avatar item-header-padding avatar-centralized avatar-large">
+                <img ng-src="{{survey.img}}">
+
+                <div class="item-header-text" ui-sref="surveyFlow({surveyId: '-1'})">
+                    <h2>{{survey.title}}</h2>
+
+                    <h3>{{survey.loopName}}</h3>
+
+                    <p>{{survey.user}}</p>
+                </div>
+                <div class="item-header-stats text-center" ui-sref="app.surveyStats">
+                    <button class="button button-medium button-clear">
+                        <i class="fa fa-pie-chart fa-lg calm"></i>
+                    </button>
+                    <p><i class="icon ion-ios-checkmark-outline icon-inline-padding"></i>{{survey.answeredCount}}
+                    </p>
+                </div>
+            </div>
+            <div class="item item-body item-body-survey">
+                <p>
+                    {{survey.description}}
+                </p>
+                <span class="badge badge-energized">{{survey.questionCount}}</span>
+                <p>5 minutes ago &middot; Atlanta, GA</p>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,61 @@
+<ion-view>
+	<ion-nav-bar class="bar-calm">
+		<ion-nav-back-button></ion-nav-back-button>
+	</ion-nav-bar>
+	<ion-content class="padding">
+		<form name="signup_form">
+			<div class="card">
+				<label class="item item-input item-floating-label">
+					<span class="input-label">email</span>
+					<input type="email" name="email" placeholder="email" ng-model="user.email" required>
+				</label>
+				<label class="item item-input item-floating-label">
+					<span class="input-label">password</span>
+					<input type="password" name="password" placeholder="password" ng-model="user.password" required>
+					<!--<small class="error" ng-show="signup_form.password.$invalid && signup_form.password.$dirty">That is not a valid password. Please input a valid password.</small>-->
+				</label>
+				<label class="item item-input item-floating-label">
+					<span class="input-label">confirm password</span>
+					<input type="password" placeholder="password" ng-model="user.password2" required>
+				</label>
+				<label class="item item-input item-floating-label">
+					<span class="input-label">first name</span>
+					<input type="text" placeholder="first name" ng-model="user.firstName" required>
+				</label>
+				<label class="item item-input item-floating-label">
+					<span class="input-label">last name</span>
+					<input type="text" placeholder="last name" ng-model="user.lastName" required>
+				</label>
+				<label class="item item-input item-select">
+					<div class="input-label">
+						Sex
+					</div>
+					<select ng-model="user.sex" required>
+						<option>M</option>
+						<option>F</option>
+					</select>
+				</label>
+				<label class="item item-input item-select">
+					<div class="input-label">
+						Race
+					</div>
+					<select ng-model="user.race" required>
+						<option>Jedi</option>
+						<option>Undead</option>
+						<option>Vampire</option>
+					</select>
+				</label>
+				<label class="item item-input item-floating-label">
+					<span class="input-label">date of birth</span>
+					<input type="date" ng-model="user.dob" required>
+				</label>
+			</div>
+			<p ng-show="error">{{message}}</p>
+			<div class="padding">
+				<button class="button button-block button-calm" ng-click="signup()">
+					Sign Up
+				</button>
+			</div>
+		</form>
+	</ion-content>
+</ion-view>

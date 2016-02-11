@@ -1,0 +1,21 @@
+<ion-view view-title="My Loops" hide-back-button="true">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ui-sref="app.createLoop">
+            <span class="icon ion-plus-circled"></span>
+        </button>
+    </ion-nav-buttons>
+        <div class="bar bar-subheader">
+            <div class="main-nav">
+                <ul>
+                    <li class="nav-weight nav-big-font" ng-class="{active:isActiveTab(locationTabs[0].url)}"
+                        ng-click="onClickTab(locationTabs[0])"><a>{{locationTabs[0].title}}</a></li>
+                    <li class="nav-weight nav-big-font" ng-class="{active:isActiveTab(locationTabs[1].url)}"
+                        ng-click="onClickTab(locationTabs[1])"><a>{{locationTabs[1].title}}</a></li>
+                </ul>
+            </div>
+        </div>
+        <ion-content class="has-subheader" ng-class="{'has-footer' : platform != 'android'}" delegate-handle="mainScroll">
+            <div ng-include="currentTab" class="survey-cards"></div>
+        </ion-content>
+    </ion-view>
+</ion-view>

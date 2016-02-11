@@ -1,0 +1,34 @@
+<ion-view title="Survey Name">
+    <ion-nav-bar class="bar-calm">
+        <ion-nav-buttons side="left">
+            <button ui-sref="app.home" class="button button-clear button-icon ion-android-close"></button>
+        </ion-nav-buttons>
+        <ion-nav-buttons side="right">
+            <button class="button button-clear button-icon ion-ios-information-outline"></button>
+        </ion-nav-buttons>
+    </ion-nav-bar>
+    <!-- Used two footers because the footer only allows two buttons, three buttons produce a glitch .5s glitch that two buttons appear in the left side by side each other-->
+    <div class="bar bar-stable bar-footer" ng-if="currentIndex != questions.length - 1">
+        <button class="button button-clear icon-left ion-chevron-left" ng-click="goLeft()" ng-if="currentIndex > 0">Left</button>
+        <div class="title">{{currentIndex + 1}}/{{numOfQuestions}}</div>
+        <button class="button button-clear icon-right ion-chevron-right" ng-click="goRight()" ng-if="currentIndex != questions.length - 1">Right</button>
+    </div>
+    <div class="bar bar-stable bar-footer" ng-if="currentIndex == questions.length - 1">
+        <button class="button button-clear icon-left ion-chevron-left" ng-click="goLeft()" ng-if="currentIndex > 0">Left</button>
+        <div class="title">{{currentIndex + 1}}/{{numOfQuestions}}</div>
+        <button class="button button-clear icon-right ion-checkmark-round" ng-click="finish()">Finish</button>
+    </div>
+    <ion-content class="padding has-header has-footer">
+
+        <div class="survey-question-content">
+            <h4>{{question.title}}</h4>
+            <div ng-switch="question.questionType">
+                <answer-ranking ng-switch-when="ranking" question="question"></answer-ranking>
+                <answer-text-box ng-switch-when="textBox" question="question"></answer-text-box>
+                <answer-slider-scale ng-switch-when="sliderScale" question="question"></answer-slider-scale>
+                <answer-multiple-choice ng-switch-when="multipleChoice" question="question"></answer-multiple-choice>
+                <answer-number-box ng-switch-when="numberBox" question="question"></answer-number-box>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

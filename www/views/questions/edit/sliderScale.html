@@ -1,0 +1,38 @@
+<div class="card card-form">
+    <div class="item">
+        <h2 class="form-title">Question:</h2>
+        <label class="item item-input">
+            <textarea rows="3" ng-model="question.title"></textarea>
+        </label>
+    </div>
+    <div class="item">
+        <h2 class="form-title">Scales:</h2>
+        <div class="list">
+            <label class="item item-input item-select">
+                <div class="input-label">
+                    Scale
+                </div>
+                <select ng-model="question.scale" ng-options="scale.name for scale in scales">
+                </select>
+            </label>
+        </div>
+        <div class="list">
+            <div class="item" ng-repeat="step in question.scale.steps">
+                {{step}}
+            </div>
+        </div>
+    </div>
+    <div class="item">
+        <ul class="list">
+            <li class="item item-toggle">
+                Required
+                <label class="toggle toggle-energized">
+                    <input type="checkbox" ng-model="question.required">
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </li>
+        </ul>
+    </div>
+</div>

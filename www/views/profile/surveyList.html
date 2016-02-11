@@ -1,0 +1,20 @@
+<div class="list card">
+    <div ng-repeat="survey in surveys" class="item item-avatar item-header-padding avatar-centralized avatar-large">
+        <img ng-src="{{survey.img}}">
+
+        <div class="item-header-text">
+            <h2>{{survey.title}}</h2>
+
+            <h3>{{survey.loopName}}</h3>
+
+            <p>{{survey.user}}</p>
+        </div>
+        <div class="item-header-stats text-center">
+            <button class="button button-medium button-clear">
+                <i class="fa fa-pie-chart fa-lg calm"></i>
+            </button>
+            <p><i class="icon ion-ios-checkmark-outline icon-inline-padding"></i>{{survey.answeredCount}}
+            </p>
+        </div>
+    </div>
+</div>
