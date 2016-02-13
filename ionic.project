@@ -2,7 +2,8 @@
   "name": "loop",
   "gulpStartupTasks": [
     "sass",
-    "watch"
+    "watch",
+    "babel"
   ],
   "watchPatterns": [
     "www/**/*",

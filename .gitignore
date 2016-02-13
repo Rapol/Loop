@@ -1,17 +1,17 @@
 
 # Node
-**/node_modules
+node_modules
 
 # MSCode
 typings/
 
 # Cordova
-**/platforms
-**/plugins
+platforms
+plugins
 **/hooks
 
 ## JS libraries
-**/lib
+www/lib
 
 # Ionic
 **/.io-config.json
@@ -20,6 +20,10 @@ typings/
 .idea/
 *.iml
 *.iws
+
+# Sources
+www/css
+www/js
 
 
 # Compiled source #
