@@ -68,7 +68,7 @@ angular.module('loop.directives.survey', [])
 				question: "=",
 				options: "="
 			},
-			controller: function ($scope) {
+			controller: function ($scope, $ionicPopup) {
 
 				$scope.newChoice = {};
 
@@ -87,6 +87,35 @@ angular.module('loop.directives.survey', [])
 						$scope.newChoice = {};
 					}
 				};
+
+				$scope.editItem = function (choice){
+					$scope.draftChoice = {};
+					$scope.draftChoice.text = choice.text;
+
+					var editChoicePopup = $ionicPopup.show({
+						template: '<textarea type="text" rows="2" ng-model="draftChoice.text"></textarea>',
+						title: 'Edit Choice',
+						scope: $scope,
+						buttons: [
+							{ text: 'Cancel' },
+							{
+								text: '<b>Edit</b>',
+								type: 'button-positive',
+								onTap: function(e) {
+									if (!$scope.draftChoice.text) {
+										//don't allow the user to close unless he enters wifi password
+										e.preventDefault();
+									} else {
+										return $scope.draftChoice;
+									}
+								}
+							}
+						]
+					});
+					editChoicePopup.then(function(res){
+						choice.text = res.text;
+					});
+				}
 			}
 		}
 	}])
@@ -117,6 +146,35 @@ angular.module('loop.directives.survey', [])
 						$scope.newChoice = {};
 					}
 				};
+
+				$scope.editItem = function (choice){
+					$scope.draftChoice = {};
+					$scope.draftChoice.text = choice.text;
+
+					var editChoicePopup = $ionicPopup.show({
+						template: '<textarea type="text" rows="2" ng-model="draftChoice.text"></textarea>',
+						title: 'Edit Choice',
+						scope: $scope,
+						buttons: [
+							{ text: 'Cancel' },
+							{
+								text: '<b>Edit</b>',
+								type: 'button-positive',
+								onTap: function(e) {
+									if (!$scope.draftChoice.text) {
+										//don't allow the user to close unless he enters wifi password
+										e.preventDefault();
+									} else {
+										return $scope.draftChoice;
+									}
+								}
+							}
+						]
+					});
+					editChoicePopup.then(function(res){
+						choice.text = res.text;
+					});
+				}
 			}
 		}
 	}])
@@ -291,6 +349,7 @@ angular.module('loop.directives.survey', [])
 				question: "="
 			},
 			controller: function($scope){
+				$scope.question.scale.selected = Math.round($scope.question.scale.steps.length/2);
 
 			}
 		}

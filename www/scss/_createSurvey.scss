@@ -1,5 +1,9 @@
 $question-animation-time: 850ms;
 
+//================================================================================
+// Card Form and misc
+//================================================================================
+
 .input-border {
   border: 1px solid #ddd;
   width: 100%;
@@ -7,6 +11,8 @@ $question-animation-time: 850ms;
 
 textarea {
   resize: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .card-form {
@@ -50,11 +56,9 @@ textarea {
   top: 8px;
 }
 
-// QUESTIONS
-
-//.item-text-wrap .item-content{
-//  width: 80%;
-//}
+//================================================================================
+// Create Survey Flow
+//================================================================================
 
 .question-button-bar {
   margin-top: 20px;
@@ -122,7 +126,10 @@ textarea {
   left: 35%
 }
 
+
+//================================================================================
 // Review
+//================================================================================
 
 .survey-info {
   padding: 0px 0px 10px 0px;
@@ -155,6 +162,13 @@ textarea {
 .exit-survey-popup .popup-body {
   p {
     text-align: center;
+  }
+}
 
+.survey-created{
+  margin-top: 20vh;
+  text-align: center;
+  i{
+    font-size: 80px;
   }
 }

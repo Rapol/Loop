@@ -112,13 +112,13 @@ App.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionS
 			return true;
 		}
 
-		$ionicPlatform.registerBackButtonAction(function(event){
+		$ionicPlatform.registerBackButtonAction(function (event) {
 			CreateSurveyService.exitSurveyPopup();
 		}, 100);
 	}]);
 
-App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', 'CreateSurveyService', 'Survey',
-	function ($scope, $state, $ionicActionSheet, $ionicPlatform, CreateSurveyService, Survey) {
+App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', '$ionicLoading', '$timeout', 'CreateSurveyService', 'Survey',
+	function ($scope, $state, $ionicActionSheet, $ionicPlatform, $ionicLoading, $timeout, CreateSurveyService, Survey) {
 
 		$scope.questions = CreateSurveyService.getQuestions();
 		$scope.surveyInfo = CreateSurveyService.getSurveyInfo();
@@ -126,7 +126,7 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 			editing: false
 		};
 
-		$scope.addQuestion = function(){
+		$scope.addQuestion = function () {
 			showActionSheet($ionicActionSheet, clickActionButtonConfig);
 		};
 
@@ -143,21 +143,38 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 			$scope.questions.splice($scope.questions.indexOf(choice), 1);
 		};
 
-		$scope.sendSurvey = function(){
-			Survey.createdSurveys.push(CreateSurveyService.getSurvey());
-			$state.go("app.home");
+		$scope.createSurvey = function () {
+			var backdrop = $ionicLoading.show({
+				template: 'Creating survey...'
+			});
+
+			$timeout(function () {
+					Survey.createdSurveys.push(CreateSurveyService.getSurvey());
+					backdrop.hide();
+					$state.go("surveyCreated");
+				},
+				2000);
 		};
 
-		function clickActionButtonConfig(index){
+		function clickActionButtonConfig(index) {
 			setQuestionType(index, CreateSurveyService);
 			$state.go("addQuestion");
 			return true;
 		}
 
-		$ionicPlatform.registerBackButtonAction(function(event){
+		$ionicPlatform.registerBackButtonAction(function (event) {
 			CreateSurveyService.exitSurveyPopup();
 		}, 100);
 	}]);
+
+App.controller('surveyCreatedController', ['$scope', '$state', '$timeout',
+	function ($scope, $state, $timeout) {
+		$timeout(function () {
+				$state.go("app.home");
+			},
+			2000);
+	}
+]);
 
 App.controller('editSurveyInfoController', ['$scope', '$ionicHistory', 'CreateSurveyService',
 	function ($scope, $ionicHistory, CreateSurveyService) {
@@ -307,7 +324,7 @@ function showActionSheet($ionicActionSheet, click) {
 	});
 }
 
-function setQuestionType(index, CreateSurveyService){
+function setQuestionType(index, CreateSurveyService) {
 	switch (index) {
 		case 0:
 			CreateSurveyService.newQuestionType = "multipleChoice";

@@ -37,7 +37,7 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 				},
 				{
 					"questionType": "sliderScale",
-					"title": "How many times have you gone sky diving?",
+					"title": "Would you go again sky diving?",
 					"scale": {
 						"name": "Agreement",
 						"steps": [

@@ -104,6 +104,12 @@ angular.module('App',
 				templateUrl: 'views/createSurvey/editQuestion.html',
 				controller: 'editQuestionController'
 			})
+			.state('surveyCreated', {
+				url: '/surveyCreated',
+				cache: false,
+				templateUrl: 'views/createSurvey/surveyCreated.html',
+				controller: 'surveyCreatedController'
+			})
 			.state('surveyFlow', {
 				url: '/surveyFlow/:surveyId',
 				cache: false,

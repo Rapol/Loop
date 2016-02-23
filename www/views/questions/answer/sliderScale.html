@@ -1,13 +1,13 @@
 <div class="answer-slider-scale">
     <div class="list">
         <div class="item range range-energized">
-            0
-            <input type="range" min="0" max="100" value="50">
-            10
+            1
+            <input ng-model="question.scale.selected" type="range" min="1" max="{{question.scale.steps.length}}">
+            {{question.scale.steps.length}}
         </div>
     </div>
     <div class="text-center">
-        <h3>Very Often</h3>
-        <i class="fa fa-meh-o"></i>
+        <h3>{{question.scale.steps[question.scale.selected - 1]}}</h3>
+        <!--<i class="fa fa-meh-o"></i>-->
     </div>
 </div>

@@ -10,8 +10,9 @@
         <ion-list show-delete="options.editing" show-reorder="options.editing">
             <ion-item ng-repeat="choice in question.choices"
                       item="item"
-                      class="item-remove-animate item-text-wrap">
-                {{ $index + 1 }}) {{choice.text}}
+                      class="item-remove-animate item-text-wrap"
+                    ng-click="editItem(choice)">
+                <span class="circle-number">{{$index + 1}}</span>{{choice.text}}
                 <ion-delete-button class="ion-minus-circled"
                                    ng-click="onChoiceDelete(choice)">
                 </ion-delete-button>
@@ -20,7 +21,7 @@
             </ion-item>
         </ion-list>
         <label class="item item-input">
-            <textarea type="text" rows="3" ng-model="newChoice.text" placeholder="Choice"></textarea>
+            <textarea type="text" rows="2" ng-model="newChoice.text"></textarea>
         </label>
         <button class="button button-calm button-clear icon-left pull-right ion-ios-plus-empty question-button-bar"
                 ng-click="addChoice()">Add Choice

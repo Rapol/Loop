@@ -10076,7 +10076,9 @@ a.button {
   width: 100%; }
 
 textarea {
-  resize: none; }
+  resize: none;
+  padding-top: 10px;
+  padding-bottom: 10px; }
 
 .card-form {
   margin: 0px 0px 15px 0px; }
@@ -10174,10 +10176,17 @@ textarea {
 .exit-survey-popup .popup-body p {
   text-align: center; }
 
+.survey-created {
+  margin-top: 20vh;
+  text-align: center; }
+  .survey-created i {
+    font-size: 80px; }
+
 .survey-question-content {
   padding-top: 10px; }
   .survey-question-content > h4 {
-    margin: 10px 10px 30px 10px; }
+    margin: 10px 10px 30px 10px;
+    font-size: 20px; }
   .survey-question-content .list {
     margin: 0px; }
   .survey-question-content .list .item {
