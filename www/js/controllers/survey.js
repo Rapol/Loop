@@ -1,7 +1,7 @@
 var App = angular.module('loop.controllers.survey', []);
 
-App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', 'CreateSurveyService', 'Survey',
-	function ($scope, $stateParams, $ionicHistory, $ionicPopup, CreateSurveyService, Survey) {
+App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', '$ionicLoading', '$timeout', '$state', '$ionicModal', 'CreateSurveyService', 'Survey',
+	function ($scope, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, $state, $ionicModal, CreateSurveyService, Survey) {
 		var surveyId = parseInt($stateParams.surveyId);
 		if (surveyId != -1) {
 			$scope.questions = Survey.createdSurveys[surveyId].questions;
@@ -82,7 +82,52 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 			if ($scope.currentIndex > 0) {
 				$scope.question = $scope.questions[--$scope.currentIndex];
 			}
-		};
+		}
+
+		$scope.submitSurvey = function(){
+			var loading = $ionicLoading.show({
+				template: '<ion-spinner icon="crescent"></ion-spinner>Submiting survey...'
+			});
+
+			$timeout(function () {
+					loading.hide();
+					$ionicPopup.show({
+						template: '<div class="survey-created"><h3>Thank you!</h3></div>',
+						title: 'Survey Submitted',
+						buttons: [
+							{
+								text: 'Share',
+								type: 'button-energized',
+								onTap: function(e) {
+									e.preventDefault()
+								}
+							},
+							{
+								text: 'Home',
+								type: 'button-calm',
+								onTap: function(e) {
+									$state.go('app.home');
+								}
+							}
+						]
+					});
+				},
+				2000);
+		}
+
+		$scope.showSurveyInfo = function (){
+			$ionicModal.fromTemplateUrl('views/survey/surveyInfoModal.html', {
+				scope: $scope,
+				animation: 'slide-in-up'
+			}).then(function (modal) {
+				$scope.surveyInfoModal = modal;
+				$scope.surveyInfoModal.show();
+			});
+		}
+
+		$scope.closeSurveyInfoModal = function(){
+			$scope.surveyInfoModal.hide();
+		}
 	}]);
 
 App.controller('surveyStatsController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', 'CreateSurveyService', 'Survey',

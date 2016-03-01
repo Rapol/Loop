@@ -2,20 +2,20 @@ var App = angular.module('loop.controllers.mySurveys', []);
 
 App.controller('mySurveysController', ['$scope', '$ionicScrollDelegate', function($scope, $ionicScrollDelegate){
 	$scope.locationTabs = [{
-		url: 'views/mySurveys/draftSurveys.html',
+		url: 'views/survey/mySurveys/draftSurveys.html',
 		title:'Drafts',
 		numSurveys: 7
 	}, {
-		url: 'views/mySurveys/openSurveys.html',
+		url: 'views/survey/mySurveys/openSurveys.html',
 		title:'Open',
 		numSurveys: 4
 	}, {
-		url: 'views/mySurveys/retiredSurveys.html',
+		url: 'views/survey/mySurveys/retiredSurveys.html',
 		title:'Retired',
 		numSurveys: 2
 	}];
 
-	$scope.currentTab = 'views/mySurveys/draftSurveys.html';
+	$scope.currentTab = 'views/survey/mySurveys/draftSurveys.html';
 
 	$scope.onClickTab = function(tab) {
 		$scope.currentTab = tab.url;

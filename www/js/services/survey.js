@@ -316,7 +316,7 @@ App.service('CreateSurveyService', function ($ionicPopup, $state) {
 					type: 'button-calm',
 					onTap: function (e) {
 						resetSurvey();
-						$state.go("app.surveys");
+						$state.go('app.mySurveys');
 					}
 				},
 
@@ -400,6 +400,12 @@ App.factory('QuestionFactory', function () {
 		this.validateQuestion = function(){
 			if (!this.title)
 				return "Please fill out the question field";
+			if(!isInt(this.minChars) || !isInt(this.maxChars))
+				return "Please enter valid integers in the fields";
+
+			this.minChars = parseInt(this.minChars);
+			this.maxChars = parseInt(this.maxChars);
+
 			if (this.minChars < 0) {
 				return "Minimum characters can't be negative"
 			}
@@ -422,6 +428,12 @@ App.factory('QuestionFactory', function () {
 		this.validateQuestion = function(){
 			if (!this.title)
 				return "Please fill out the question field";
+			if(!isInt(this.minNumber) || !isInt(this.maxNumber))
+				return "Please enter valid integers in the fields";
+
+			this.minNumber = parseInt(this.minNumber);
+			this.maxNumber = parseInt(this.maxNumber);
+
 			if (this.minNumber >= this.maxNumber) {
 				return "Minimum number cannot be larger or equal to maximum number";
 			}
@@ -441,6 +453,12 @@ App.factory('QuestionFactory', function () {
 			}
 		}
 	};
+
+	function isInt(value) {
+		return !isNaN(value) &&
+			parseInt(Number(value)) == value &&
+			!isNaN(parseInt(value, 10));
+	}
 
 	return {
 		Question: QuestionFactory

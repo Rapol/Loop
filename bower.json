@@ -3,7 +3,8 @@
   "private": "true",
   "dependencies": {
     "ngCordova": "~0.1.23-alpha",
-    "angular-chart.js": "~0.8.8"
+    "angular-chart.js": "~0.8.8",
+    "ion-autocomplete": "~0.3.1"
   },
   "devDependencies": {
     "ionic": "driftyco/ionic-bower#1.2.1"

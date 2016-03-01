@@ -4,7 +4,7 @@
             <button ui-sref="app.home" class="button button-clear button-icon ion-android-close"></button>
         </ion-nav-buttons>
         <ion-nav-buttons side="right">
-            <button class="button button-clear button-icon ion-ios-information-outline"></button>
+            <button class="button button-clear button-icon ion-ios-information-outline" ng-click="showSurveyInfo()"></button>
         </ion-nav-buttons>
     </ion-nav-bar>
     <!-- Used two footers because the footer only allows two buttons, three buttons produce a glitch .5s glitch that two buttons appear in the left side by side each other-->
@@ -16,7 +16,7 @@
     <div class="bar bar-stable bar-footer" ng-if="currentIndex == questions.length - 1">
         <button class="button button-clear icon-left ion-chevron-left" ng-click="goLeft()" ng-if="currentIndex > 0">Left</button>
         <div class="title">{{currentIndex + 1}}/{{numOfQuestions}}</div>
-        <button class="button button-clear icon-right ion-checkmark-round" ng-click="finish()">Finish</button>
+        <button class="button button-clear icon-right ion-checkmark-round" ng-click="submitSurvey()">Finish</button>
     </div>
     <ion-content class="padding has-header has-footer">
 

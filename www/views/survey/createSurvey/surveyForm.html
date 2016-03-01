@@ -31,9 +31,8 @@
         <div class="item item-button-right" ng-repeat="attribute in surveyInfo.attributesAssign"
              ng-if="attribute.checked">
             {{attribute.name}}
-            <label class="toggle">
+            <label class="toggle toggle-energized">
                 <input type="checkbox" ng-model="attribute.required">
-
                 <div class="track">
                     <div class="handle"></div>
                 </div>

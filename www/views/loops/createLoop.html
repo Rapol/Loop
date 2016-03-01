@@ -3,27 +3,55 @@
     </ion-nav-buttons>
     <ion-nav-buttons side="left">
     </ion-nav-buttons>
-    <ion-content ng-class="{'has-footer' : platform != 'android'}">
+    <ion-content class="padding" ng-class="{'has-footer' : platform != 'android'}">
         <div class="card card-form">
             <div class="item">
                 <h2 class="form-title require">Name</h2>
-                <input  type="text">
+                <label class="item item-input">
+                    <input type="text"/>
+                </label>
 
                 <h2 class="form-title require">Description</h2>
-                <textarea rows="5"></textarea>
+                <label class="item item-input">
+                    <textarea rows="5"></textarea>
+                </label>
             </div>
             <div class="item">
-                <h2 class="form-title">Image</h2>
-                <img id="loop-create-img" class="center-image circle-border" src="img/blueOnWhiteLogo.png">
-                <div id="bottom-overlay" class="center-image circle-border">
-                    <div>
-                        <p > Tap to add <br>Photo</p>
+                <h2 class="form-title">Photo</h2>
+
+                <div class="center-image circle-border add-photo" ng-click="choosePhoto()">
+                    <p ng-if="!imgURI"> Tap to add <br>Photo</p>
+                    <img ng-if="imgURI" class="center-image circle-border add-photo" ng-src="{{imgURI}}"/>
+                </div>
+            </div>
+            <div class="item item-toggle">
+                Private
+                <label class="toggle toggle-energized">
+                    <input type="checkbox">
+
+                    <div class="track">
+                        <div class="handle"></div>
+                    </div>
+                </label>
+            </div>
+            <div class="item item-icon-right" ng-click="openMembersModal()">
+                Add Members
+                <i class="icon ion-android-person-add"></i>
+            </div>
+            <div class="item">
+                <div class="list">
+                    <div class="item item-button-right" ng-repeat="friend in friends" ng-if="friend.selected">
+                        {{friend.firstName}} {{friend.lastName}}
+                        <button class="button button-clear button-energized" ng-click="friend.selected = false">
+                            <i class="icon ion-android-cancel"></i>
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="item">
-                <h2 class="form-title">Visibility</h2>
-                <h2 class="form-title">Admin</h2>
+                <button class="button button-block button-energized" ui-sref="app.loops">
+                    Create Loop
+                </button>
             </div>
         </div>
     </ion-content>

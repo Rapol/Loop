@@ -1,5 +1,5 @@
 <div class="list card">
-    <div ng-repeat="survey in surveys" class="item item-avatar item-header-padding avatar-centralized avatar-large">
+    <div ng-repeat="survey in surveys" class="item item-avatar item-header-padding avatar-centralized avatar-large" ui-sref="app.surveyStats">
         <img ng-src="{{survey.img}}">
 
         <div class="item-header-text">
@@ -17,4 +17,5 @@
             </p>
         </div>
     </div>
+    <div class="item text-center" ng-if="surveys.length == 0"><p>No Surveys</p></div>
 </div>

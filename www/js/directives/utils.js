@@ -41,4 +41,26 @@ angular.module('loop.directives.utils', [])
 				angular.element(element[0]).children().addClass(icon);
 			}
 		};
+	}])
+	.directive('tabs', [function () {
+		return {
+			restrict: 'E',
+			replace: true,
+			scope: {
+				tabs: '=tabs',
+				currentTab: "=currentTab"
+			},
+			templateUrl: 'views/utils/tabs.html',
+			controller: function($scope, $ionicScrollDelegate){
+				$scope.onClickTab = function(index) {
+					$scope.currentTab = $scope.tabs[index];
+					$ionicScrollDelegate.$getByHandle('mainScroll').scrollTop(true);
+				};
+
+				$scope.isActiveTab = function(title) {
+					return $scope.currentTab.title == title;
+				}
+			}
+
+		};
 	}]);

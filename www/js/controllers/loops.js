@@ -1,26 +1,79 @@
-/**
- * Created by Jatin Bhatia on 12/16/2015.
- */
-
 var App = angular.module('loop.controllers.loops', []);
 
-App.controller('myLoopsController', ['$scope', '$ionicScrollDelegate', function($scope, $ionicScrollDelegate){
-    $scope.locationTabs = [{
-        url: 'views/loops/privateLoops.html',
-        title:'Public'
-    }, {
-        url: 'views/loops/publicLoops.html',
-        title:'Private'
-    }, ];
+App.controller('myLoopsController', ['$scope', 'Loop', function ($scope, Loop) {
 
-    $scope.currentTab = 'views/loops/privateLoops.html';
+	$scope.loops = Loop.publicLoops;
 
-    $scope.onClickTab = function(tab) {
-        $scope.currentTab = tab.url;
-        $ionicScrollDelegate.$getByHandle('mainScroll').scrollTop();
-    }
+	$scope.locationTabs = ['Public', 'Private'];
 
-    $scope.isActiveTab = function(tabUrl) {
-        return tabUrl == $scope.currentTab;
-    }
+	$scope.currentTab = $scope.locationTabs[0];
+
+	$scope.onClickTab = function (tab) {
+		$scope.currentTab = tab;
+		if ($scope.currentTab == $scope.locationTabs[0])
+			$scope.loops = Loop.publicLoops;
+		else
+			$scope.loops = Loop.privateLoops;
+		$ionicScrollDelegate.$getByHandle('mainScroll').scrollTop();
+	};
+
+	$scope.isActiveTab = function (tab) {
+		return tab == $scope.currentTab;
+	}
+}]);
+
+App.controller('loopProfileController', ['$scope', 'Survey', 'Friend', function ($scope, Survey, Friend) {
+
+	$scope.tabs = [{
+		title: "Surveys",
+		content: Survey.market
+	}, {
+		title: "Members",
+		content: Friend.getTopFriends()
+	}];
+
+	$scope.currentTab = $scope.tabs[0];
+
+}]);
+
+App.controller('createLoopController', ['$scope', '$ionicModal', '$cordovaCamera', 'Friend', function ($scope, $ionicModal, $cordovaCamera, Friend) {
+
+	$scope.friends = Friend.getFriends();
+	$scope.imgURI = "";
+
+	$ionicModal.fromTemplateUrl('views/loops/addMembers.html', {
+		scope: $scope,
+		animation: 'slide-in-up'
+	}).then(function(modal) {
+		$scope.modal = modal;
+	});
+
+	$scope.openMembersModal = function () {
+		$scope.modal.show();
+	};
+
+	$scope.closeMembersModal = function() {
+		$scope.modal.hide();
+	};
+
+	$scope.choosePhoto = function () {
+		var options = {
+			quality: 75,
+			destinationType: Camera.DestinationType.DATA_URL,
+			sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+			allowEdit: true,
+			encodingType: Camera.EncodingType.JPEG,
+			targetWidth: 300,
+			targetHeight: 300,
+			popoverOptions: CameraPopoverOptions,
+			saveToPhotoAlbum: false
+		};
+
+		$cordovaCamera.getPicture(options).then(function (imageData) {
+			$scope.imgURI = "data:image/jpeg;base64," + imageData;
+		}, function (err) {
+			// An error occured. Show a message to the user
+		});
+	}
+
 }]);

@@ -93,7 +93,7 @@ angular.module('loop.directives.survey', [])
 					$scope.draftChoice.text = choice.text;
 
 					var editChoicePopup = $ionicPopup.show({
-						template: '<textarea type="text" rows="2" ng-model="draftChoice.text"></textarea>',
+						template: '<textarea type="text" autofocus rows="2" ng-model="draftChoice.text"></textarea>',
 						title: 'Edit Choice',
 						scope: $scope,
 						buttons: [
@@ -103,7 +103,7 @@ angular.module('loop.directives.survey', [])
 								type: 'button-positive',
 								onTap: function(e) {
 									if (!$scope.draftChoice.text) {
-										//don't allow the user to close unless he enters wifi password
+										// prevents closing the popup if textarea is blank
 										e.preventDefault();
 									} else {
 										return $scope.draftChoice;
@@ -152,7 +152,7 @@ angular.module('loop.directives.survey', [])
 					$scope.draftChoice.text = choice.text;
 
 					var editChoicePopup = $ionicPopup.show({
-						template: '<textarea type="text" rows="2" ng-model="draftChoice.text"></textarea>',
+						template: '<textarea type="text" autofocus rows="2" ng-model="draftChoice.text"></textarea>',
 						title: 'Edit Choice',
 						scope: $scope,
 						buttons: [
@@ -162,7 +162,7 @@ angular.module('loop.directives.survey', [])
 								type: 'button-positive',
 								onTap: function(e) {
 									if (!$scope.draftChoice.text) {
-										//don't allow the user to close unless he enters wifi password
+										// prevents closing the popup if textarea is blank
 										e.preventDefault();
 									} else {
 										return $scope.draftChoice;
@@ -226,7 +226,7 @@ angular.module('loop.directives.survey', [])
 	.directive('createSurveyForm', [function () {
 		return {
 			restrict: 'E',
-			templateUrl: "views/createSurvey/surveyForm.html",
+			templateUrl: "views/survey/createSurvey/surveyForm.html",
 			scope: {
 				surveyInfo: "="
 			},
@@ -280,7 +280,7 @@ angular.module('loop.directives.survey', [])
 					return true;
 				}
 
-				$ionicModal.fromTemplateUrl('views/createSurvey/loopsModal.html', {
+				$ionicModal.fromTemplateUrl('views/survey/createSurvey/loopsModal.html', {
 					scope: $scope,
 					animation: 'slide-in-up'
 				}).then(function (modal) {
@@ -296,7 +296,7 @@ angular.module('loop.directives.survey', [])
 					$scope.loopModal.hide();
 				};
 
-				$ionicModal.fromTemplateUrl('views/createSurvey/attributesModal.html', {
+				$ionicModal.fromTemplateUrl('views/survey/createSurvey/attributesModal.html', {
 					scope: $scope,
 					animation: 'slide-in-up'
 				}).then(function (modal) {
@@ -368,4 +368,13 @@ angular.module('loop.directives.survey', [])
 				};
 			}
 		}
-	}]);
+	}])
+	.directive('surveyList', [function () {
+		return {
+			restrict: 'E',
+			templateUrl: "views/survey/surveyList.html",
+			scope: {
+				surveys: "="
+			}
+		}
+	}])

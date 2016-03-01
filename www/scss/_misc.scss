@@ -7,7 +7,7 @@
   background-size: 100% 0px !important;
 }
 
-.bar-footer, .big-bar-footer{
+.bar-footer, .big-bar-footer {
   border-bottom-color: transparent !important;
   border-color: transparent !important;
   background-image: none !important;
@@ -34,4 +34,21 @@
 
 .bold {
   font-weight: bold;
+}
+
+.loading-container .loading {
+  padding-top: 10px;
+  .spinner {
+    position: relative;
+    bottom: -7px;
+    margin-right: 5px;
+  }
+}
+
+.energized-background {
+  background-color: $energized;
+}
+
+.calm-background {
+  background-color: $calm;
 }

@@ -1,6 +1,6 @@
-var App = angular.module('loop.services.friends', []);
+var App = angular.module('loop.services.friend', []);
 
-App.service('friendsService', function () {
+App.service('Friend', function () {
 	var friends = [
 		{
 			firstName: "Shaun",

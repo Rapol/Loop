@@ -1,3 +1,4 @@
 angular.module('loop.services', [
 	'loop.services.survey',
-	'loop.services.friends']);
+	'loop.services.friend',
+	'loop.services.loop']);

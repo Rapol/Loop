@@ -14,7 +14,7 @@ angular.module('App',
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)
 			if (window.cordova && window.cordova.plugins.Keyboard) {
-				cordova.plugins.Keyboard.disableScroll(false);
+				cordova.plugins.Keyboard.disableScroll(true);
 				cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
 			}
 			if (window.StatusBar) {
@@ -49,9 +49,9 @@ angular.module('App',
 				url: '/search',
 				templateUrl: 'views/search/search.html'
 			})
-			.state('app.surveys', {
-				url: '/surveys',
-				templateUrl: 'views/mySurveys/surveysTab.html',
+			.state('app.mySurveys', {
+				url: '/mySurveys',
+				templateUrl: 'views/survey/mySurveys/surveysTab.html',
 				controller: 'mySurveysController'
 			})
 			.state('app.surveyStats', {
@@ -61,54 +61,54 @@ angular.module('App',
 			})
 			.state('app.loops', {
 				url: '/loops',
-				templateUrl: 'views/loops/loops.html',
+				templateUrl: 'views/loops/myLoops.html',
 				controller: 'myLoopsController'
+			})
+			.state('app.loopProfile', {
+				url: '/loopProfile',
+				templateUrl: 'views/loops/loopProfile.html',
+				controller: 'loopProfileController'
 			})
 			.state('app.createLoop', {
 				url: '/createLoop',
-				templateUrl: 'views/loops/createLoop.html'
+				templateUrl: 'views/loops/createLoop.html',
+				controller: 'createLoopController'
 			})
 			.state('app.createSurvey', {
 				url: '/createSurvey',
 				cache: false,
-				templateUrl: 'views/createSurvey/createSurvey.html',
+				templateUrl: 'views/survey/createSurvey/createSurvey.html',
 				controller: 'createSurveyController'
 			})
 			.state('createSurveyFlow', {
 				url: '/createSurveyFlow',
 				cache: false,
-				templateUrl: 'views/createSurvey/createSurveyFlow.html',
+				templateUrl: 'views/survey/createSurvey/createSurveyFlow.html',
 				controller: 'createSurveyFlowController'
 			})
 			.state('reviewSurvey', {
 				url: '/reviewSurvey',
 				cache: false,
-				templateUrl: 'views/createSurvey/reviewSurvey.html',
+				templateUrl: 'views/survey/createSurvey/reviewSurvey.html',
 				controller: 'reviewSurveyController'
 			})
 			.state('editSurveyInfo', {
 				url: '/editSurveyInfo',
 				cache: false,
-				templateUrl: 'views/createSurvey/editSurveyInfo.html',
+				templateUrl: 'views/survey/createSurvey/editSurveyInfo.html',
 				controller: 'editSurveyInfoController'
 			})
 			.state('addQuestion', {
 				url: '/addQuestion',
 				cache: false,
-				templateUrl: 'views/createSurvey/addQuestion.html',
+				templateUrl: 'views/survey/createSurvey/addQuestion.html',
 				controller: 'addQuestionController'
 			})
 			.state('editQuestion', {
 				url: '/editQuestion/:questionNumber',
 				cache: false,
-				templateUrl: 'views/createSurvey/editQuestion.html',
+				templateUrl: 'views/survey/createSurvey/editQuestion.html',
 				controller: 'editQuestionController'
-			})
-			.state('surveyCreated', {
-				url: '/surveyCreated',
-				cache: false,
-				templateUrl: 'views/createSurvey/surveyCreated.html',
-				controller: 'surveyCreatedController'
 			})
 			.state('surveyFlow', {
 				url: '/surveyFlow/:surveyId',

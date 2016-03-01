@@ -1,11 +1,11 @@
 //Controllers for friends page
 var App = angular.module('loop.controllers.friends', []);
 
-App.controller('friendsController', ['$scope', 'friendsService', function ($scope, friendsService) {
+App.controller('friendsController', ['$scope', 'Friend', function ($scope, Friend) {
 
-	$scope.friends = friendsService.getFriends();
+	$scope.friends = Friend.getFriends();
 
 	$scope.friendFilters = "";
 
-	$scope.topFriends = friendsService.getTopFriends();
+	$scope.topFriends = Friend.getTopFriends();
 }]);

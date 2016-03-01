@@ -9751,6 +9751,19 @@ a.button {
 .bold {
   font-weight: bold; }
 
+.loading-container .loading {
+  padding-top: 10px; }
+  .loading-container .loading .spinner {
+    position: relative;
+    bottom: -7px;
+    margin-right: 5px; }
+
+.energized-background {
+  background-color: #F89B1C; }
+
+.calm-background {
+  background-color: #00ADEE; }
+
 /* Home Item list styles*/
 .avatar-centralized img:first-child {
   top: 0;
@@ -9825,21 +9838,16 @@ a.button {
   height: 200px;
   border: 1px solid #ddd; }
 
-#bottom-overlay {
+.add-photo {
   position: relative;
+  display: flex;
+  align-items: center;
   width: 200px;
   height: 200px;
-  margin-top: -200px;
-  background-color: #F89B1C;
-  -webkit-clip-path: inset(195px 0px 0px 0px);
-  clip-path: inset(0px 50px 50px 0px); }
-  #bottom-overlay div {
-    position: absolute;
-    bottom: 5px;
-    width: 200px; }
-    #bottom-overlay div p {
-      color: #00ADEE;
-      text-align: center; }
+  border: 1px solid #ddd; }
+  .add-photo p {
+    width: 100%;
+    text-align: center; }
 
 .full-opacity {
   opacity: 1; }
@@ -10012,8 +10020,7 @@ a.button {
     font-size: 52px; }
 
 .profile-header {
-  height: 180px;
-  background-color: #00ADEE; }
+  height: 180px; }
   .profile-header #profile-slide-home {
     text-align: center; }
     .profile-header #profile-slide-home img {
@@ -10177,16 +10184,16 @@ textarea {
   text-align: center; }
 
 .survey-created {
-  margin-top: 20vh;
   text-align: center; }
   .survey-created i {
-    font-size: 80px; }
+    font-size: 42px; }
 
 .survey-question-content {
   padding-top: 10px; }
   .survey-question-content > h4 {
     margin: 10px 10px 30px 10px;
-    font-size: 20px; }
+    font-size: 20px;
+    min-height: 2em; }
   .survey-question-content .list {
     margin: 0px; }
   .survey-question-content .list .item {
@@ -10195,8 +10202,6 @@ textarea {
       -moz-transition: none;
       -webkit-transition: none;
       transition: none; }
-  .survey-question-content label {
-    margin: 40px 10px 0px 10px; }
 
 .answer-ranking-choices .item-content {
   padding: 0px 0px 0px 10px;

@@ -27,21 +27,15 @@
   border: 1px solid #ddd;
 }
 
-#bottom-overlay {
+.add-photo {
   position: relative;
+  display: flex;
+  align-items: center;
   width: 200px;
   height: 200px;
-  margin-top: -200px;
-  background-color: $energized;
-  -webkit-clip-path: inset(195px 0px 0px 0px);
-  clip-path: inset(0px 50px 50px 0px);
-  div {
-    position: absolute;
-    bottom: 5px;
-    width: 200px;
-    p{
-      color: $calm;
-      text-align: center;
-    }
+  border: 1px solid #ddd;
+  p{
+    width: 100%;
+    text-align: center;
   }
 }

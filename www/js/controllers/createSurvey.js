@@ -117,8 +117,8 @@ App.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionS
 		}, 100);
 	}]);
 
-App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', '$ionicLoading', '$timeout', 'CreateSurveyService', 'Survey',
-	function ($scope, $state, $ionicActionSheet, $ionicPlatform, $ionicLoading, $timeout, CreateSurveyService, Survey) {
+App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', '$ionicLoading', '$timeout', '$ionicPopup', 'CreateSurveyService', 'Survey',
+	function ($scope, $state, $ionicActionSheet, $ionicPlatform, $ionicLoading, $timeout, $ionicPopup, CreateSurveyService, Survey) {
 
 		$scope.questions = CreateSurveyService.getQuestions();
 		$scope.surveyInfo = CreateSurveyService.getSurveyInfo();
@@ -144,14 +144,33 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 		};
 
 		$scope.createSurvey = function () {
-			var backdrop = $ionicLoading.show({
-				template: 'Creating survey...'
+			var loading = $ionicLoading.show({
+				template: '<ion-spinner icon="crescent"></ion-spinner>Creating survey...'
 			});
 
 			$timeout(function () {
 					Survey.createdSurveys.push(CreateSurveyService.getSurvey());
-					backdrop.hide();
-					$state.go("surveyCreated");
+					loading.hide();
+					$ionicPopup.show({
+						template: '<div class="survey-created"><i class="icon ion-checkmark-circled"></i></div>',
+						title: 'Survey Created',
+						buttons: [
+							{
+								text: 'Share',
+								type: 'button-energized',
+								onTap: function(e) {
+									e.preventDefault()
+								}
+							},
+							{
+								text: 'My Surveys',
+								type: 'button-calm',
+								onTap: function(e) {
+									$state.go('app.mySurveys');
+								}
+							}
+						]
+					});
 				},
 				2000);
 		};
@@ -246,7 +265,7 @@ App.controller('addQuestionController', ['$scope', '$ionicHistory', '$ionicPopup
 	}]);
 
 App.controller('editQuestionController', ['$scope', '$ionicHistory', '$ionicPopup', '$stateParams', 'CreateSurveyService', 'QuestionFactory',
-	function ($scope, $ionicHistory, $ionicPopup, $stateParams, CreateSurveyService, QuestionFactory) {
+	function ($scope, $ionicHistory, $ionicPopup, $stateParams, CreateSurveyService) {
 
 		$scope.questionNumber = parseInt($stateParams.questionNumber);
 		$scope.question = new CreateSurveyService.getQuestion($scope.questionNumber);

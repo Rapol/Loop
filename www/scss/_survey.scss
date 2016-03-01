@@ -3,6 +3,7 @@
   > h4 {
     margin: 10px 10px 30px 10px;
     font-size: 20px;
+    min-height: 2em;
   }
   .list {
     margin: 0px;
@@ -14,10 +15,6 @@
       -webkit-transition: none;
       transition: none;
     }
-  }
-
-  label {
-    margin: 40px 10px 0px 10px;
   }
 }
 
