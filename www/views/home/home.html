@@ -26,16 +26,16 @@
     </div>
     <ion-content class="has-subheader" ng-class="{'has-footer' : platform != 'android'}">
         <div class="list card" ng-repeat="survey in createdSurveys">
-            <div class="item item-avatar item-header-padding avatar-centralized avatar-large" ui-sref="surveyFlow({surveyId: $index})">
-                <img src="img/blueOnWhiteLogo.png">
-                <div class="item-header-text">
+            <div class="item item-avatar item-header-padding avatar-centralized avatar-large">
+                <img src="img/blueOnWhiteLogo.png" ui-sref="app.loopProfile">
+                <div class="item-header-text" ui-sref="surveyFlow({surveyId: $index})">
                     <h2>{{survey.surveyName}}</h2>
 
                     <h3>{{survey.loopsAssign[0].name}}</h3>
 
                     <p>Me</p>
                 </div>
-                <div class="item-header-stats text-center">
+                <div class="item-header-stats text-center" ui-sref="app.surveyStats">
                     <button class="button button-medium button-clear">
                         <i class="fa fa-pie-chart fa-lg calm"></i>
                     </button>
@@ -43,7 +43,7 @@
                     </p>
                 </div>
             </div>
-            <div class="item item-body item-body-survey">
+            <div class="item item-body item-body-survey" ui-sref="surveyFlow({surveyId: '-1'})">
                 <p ng-if="survey.description">
                     {{survey.description}}
                 </p>
@@ -56,7 +56,7 @@
         </div>
         <div class="list card" ng-repeat="survey in surveys">
             <div class="item item-avatar item-header-padding avatar-centralized avatar-large">
-                <img ng-src="{{survey.img}}">
+                <img ng-src="{{survey.img}}" ui-sref="app.loopProfile">
 
                 <div class="item-header-text" ui-sref="surveyFlow({surveyId: '-1'})">
                     <h2>{{survey.title}}</h2>
@@ -73,7 +73,7 @@
                     </p>
                 </div>
             </div>
-            <div class="item item-body item-body-survey">
+            <div class="item item-body item-body-survey" ui-sref="surveyFlow({surveyId: '-1'})">
                 <p>
                     {{survey.description}}
                 </p>

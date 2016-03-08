@@ -9720,6 +9720,9 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+ion-content {
+  height: auto !important; }
+
 .bar-header, .bar-subheader {
   border: 0px !important;
   border-bottom-color: transparent !important;
@@ -10084,8 +10087,7 @@ a.button {
 
 textarea {
   resize: none;
-  padding-top: 10px;
-  padding-bottom: 10px; }
+  padding: 10px 15px 10px 0px; }
 
 .card-form {
   margin: 0px 0px 15px 0px; }
@@ -10094,7 +10096,8 @@ textarea {
   margin-bottom: 10px; }
 
 .clickable-divider {
-  background-color: #f5f5f5; }
+  background-color: #f5f5f5;
+  font-weight: 500; }
 
 .item .form-title {
   margin-bottom: 10px;
@@ -10187,6 +10190,14 @@ textarea {
   text-align: center; }
   .survey-created i {
     font-size: 42px; }
+
+.choice-list textarea {
+  display: inline-block;
+  width: 79%; }
+
+.choice-list .item-content {
+  padding-top: 10px;
+  padding-bottom: 10px; }
 
 .survey-question-content {
   padding-top: 10px; }

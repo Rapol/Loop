@@ -1,12 +1,16 @@
 <div class="card card-form">
-    <div class="item">
-        <h2 class="form-title">Question:</h2>
-        <label class="item item-input">
-            <textarea rows="3" ng-model="question.title"></textarea>
-        </label>
+    <div class="item item-divider">
+        Question
     </div>
     <div class="item">
-        <h2 class="form-title">Scales:</h2>
+        <label class="item item-input">
+            <textarea rows="1" ng-model="question.title" elastic></textarea>
+        </label>
+    </div>
+    <div class="item item-divider">
+        Scales
+    </div>
+    <div class="item">
         <div class="list">
             <label class="item item-input item-select">
                 <div class="input-label">
@@ -21,6 +25,9 @@
                 {{step}}
             </div>
         </div>
+    </div>
+    <div class="item item-divider">
+        General Settings
     </div>
     <div class="item">
         <ul class="list">

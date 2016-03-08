@@ -1,3 +1,8 @@
+// Fixed ion-content blank space when ios keyboard opens
+ion-content {
+  height: auto !important;
+}
+
 .bar-header, .bar-subheader {
   border: 0px !important;
   border-bottom-color: transparent !important;

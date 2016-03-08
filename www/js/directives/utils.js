@@ -51,16 +51,34 @@ angular.module('loop.directives.utils', [])
 				currentTab: "=currentTab"
 			},
 			templateUrl: 'views/utils/tabs.html',
-			controller: function($scope, $ionicScrollDelegate){
-				$scope.onClickTab = function(index) {
+			controller: function ($scope, $ionicScrollDelegate) {
+				$scope.onClickTab = function (index) {
 					$scope.currentTab = $scope.tabs[index];
 					$ionicScrollDelegate.$getByHandle('mainScroll').scrollTop(true);
 				};
 
-				$scope.isActiveTab = function(title) {
+				$scope.isActiveTab = function (title) {
 					return $scope.currentTab.title == title;
 				}
 			}
 
 		};
-	}]);
+	}])
+	.directive('elastic', [
+		'$timeout',
+		function ($timeout) {
+			return {
+				restrict: 'A',
+				link: function ($scope, element) {
+					$scope.initialHeight = $scope.initialHeight || element[0].style.height;
+					var resize = function () {
+						element[0].style.height = $scope.initialHeight;
+						element[0].style.height = "" + element[0].scrollHeight + "px";
+					};
+					element.on("input change", resize);
+					$timeout(resize, 0);
+				}
+			};
+		}
+	]);
+;

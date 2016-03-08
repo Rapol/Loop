@@ -1,7 +1,7 @@
 var App = angular.module('loop.controllers.survey', []);
 
-App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', '$ionicLoading', '$timeout', '$state', '$ionicModal', 'CreateSurveyService', 'Survey',
-	function ($scope, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, $state, $ionicModal, CreateSurveyService, Survey) {
+App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', '$ionicLoading', '$timeout', '$state', '$ionicModal', '$ionicHistory', 'CreateSurveyService', 'Survey',
+	function ($scope, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, $state, $ionicModal, $ionicHistory, CreateSurveyService, Survey) {
 		var surveyId = parseInt($stateParams.surveyId);
 		if (surveyId != -1) {
 			$scope.questions = Survey.createdSurveys[surveyId].questions;
@@ -127,6 +127,10 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 
 		$scope.closeSurveyInfoModal = function(){
 			$scope.surveyInfoModal.hide();
+		}
+
+		$scope.goBack = function(){
+			$ionicHistory.goBack();
 		}
 	}]);
 

@@ -30,6 +30,7 @@ App.controller('createSurveyController', ['$scope', '$ionicPopup', '$state', '$i
 
 		function clickActionButtonConfig(index) {
 			setQuestionType(index, CreateSurveyService);
+			// Save general info, loops, and attributes
 			CreateSurveyService.saveSurvey($scope.surveyInfo);
 			$state.go("createSurveyFlow");
 			return true;
@@ -41,9 +42,7 @@ App.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionS
 
 		// Create a new question
 		$scope.question = new QuestionFactory.Question(CreateSurveyService.newQuestionType);
-		$scope.options = {
-			editing: false
-		};
+
 		CreateSurveyService.addQuestion($scope.question);
 		$scope.questionNumber = CreateSurveyService.getQuestionsLength();
 
@@ -122,9 +121,6 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 
 		$scope.questions = CreateSurveyService.getQuestions();
 		$scope.surveyInfo = CreateSurveyService.getSurveyInfo();
-		$scope.options = {
-			editing: false
-		};
 
 		$scope.addQuestion = function () {
 			showActionSheet($ionicActionSheet, clickActionButtonConfig);
@@ -148,8 +144,11 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 				template: '<ion-spinner icon="crescent"></ion-spinner>Creating survey...'
 			});
 
+			Survey.createdSurveys.push(CreateSurveyService.getSurvey());
+
+			CreateSurveyService.resetSurvey();
+
 			$timeout(function () {
-					Survey.createdSurveys.push(CreateSurveyService.getSurvey());
 					loading.hide();
 					$ionicPopup.show({
 						template: '<div class="survey-created"><i class="icon ion-checkmark-circled"></i></div>',
@@ -158,14 +157,14 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 							{
 								text: 'Share',
 								type: 'button-energized',
-								onTap: function(e) {
+								onTap: function (e) {
 									e.preventDefault()
 								}
 							},
 							{
 								text: 'My Surveys',
 								type: 'button-calm',
-								onTap: function(e) {
+								onTap: function (e) {
 									$state.go('app.mySurveys');
 								}
 							}
@@ -197,8 +196,8 @@ App.controller('surveyCreatedController', ['$scope', '$state', '$timeout',
 
 App.controller('editSurveyInfoController', ['$scope', '$ionicHistory', 'CreateSurveyService',
 	function ($scope, $ionicHistory, CreateSurveyService) {
-
-		$scope.surveyInfo = CreateSurveyService.getSurveyInfo();
+		$scope.surveyInfo = {};
+		angular.copy(CreateSurveyService.getSurveyInfo(), $scope.surveyInfo);
 
 		$scope.surveyInfo.loopsAssign = mergeLoops();
 		$scope.surveyInfo.attributesAssign = mergeAttributes();
@@ -243,9 +242,7 @@ App.controller('editSurveyInfoController', ['$scope', '$ionicHistory', 'CreateSu
 App.controller('addQuestionController', ['$scope', '$ionicHistory', '$ionicPopup', 'CreateSurveyService', 'QuestionFactory',
 	function ($scope, $ionicHistory, $ionicPopup, CreateSurveyService, QuestionFactory) {
 		$scope.question = new QuestionFactory.Question(CreateSurveyService.newQuestionType);
-		$scope.options = {
-			editing: false
-		};
+
 		$scope.questionNumber = CreateSurveyService.getQuestionsLength();
 
 		$scope.editButton = showEditButton($scope.question.questionType);
@@ -268,10 +265,10 @@ App.controller('editQuestionController', ['$scope', '$ionicHistory', '$ionicPopu
 	function ($scope, $ionicHistory, $ionicPopup, $stateParams, CreateSurveyService) {
 
 		$scope.questionNumber = parseInt($stateParams.questionNumber);
-		$scope.question = new CreateSurveyService.getQuestion($scope.questionNumber);
-		$scope.options = {
-			editing: false
-		};
+
+		$scope.question = {};
+
+		angular.copy(CreateSurveyService.getQuestion($scope.questionNumber), $scope.question);
 
 		$scope.editButton = showEditButton($scope.question.questionType);
 

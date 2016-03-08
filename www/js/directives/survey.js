@@ -65,12 +65,9 @@ angular.module('loop.directives.survey', [])
 			restrict: 'E',
 			templateUrl: "views/questions/edit/multipleChoice.html",
 			scope: {
-				question: "=",
-				options: "="
+				question: "="
 			},
-			controller: function ($scope, $ionicPopup) {
-
-				$scope.newChoice = {};
+			controller: function ($scope) {
 
 				$scope.moveChoice = function (choice, fromIndex, toIndex) {
 					$scope.question.choices.splice(fromIndex, 1);
@@ -82,40 +79,14 @@ angular.module('loop.directives.survey', [])
 				};
 
 				$scope.addChoice = function () {
-					if ($scope.newChoice.text) {
-						$scope.question.choices.push($scope.newChoice);
-						$scope.newChoice = {};
-					}
+					$scope.question.choices.push({
+						text: ""
+					});
 				};
 
-				$scope.editItem = function (choice){
-					$scope.draftChoice = {};
-					$scope.draftChoice.text = choice.text;
+				if($scope.question.choices.length == 0)
+					$scope.addChoice();
 
-					var editChoicePopup = $ionicPopup.show({
-						template: '<textarea type="text" autofocus rows="2" ng-model="draftChoice.text"></textarea>',
-						title: 'Edit Choice',
-						scope: $scope,
-						buttons: [
-							{ text: 'Cancel' },
-							{
-								text: '<b>Edit</b>',
-								type: 'button-positive',
-								onTap: function(e) {
-									if (!$scope.draftChoice.text) {
-										// prevents closing the popup if textarea is blank
-										e.preventDefault();
-									} else {
-										return $scope.draftChoice;
-									}
-								}
-							}
-						]
-					});
-					editChoicePopup.then(function(res){
-						choice.text = res.text;
-					});
-				}
 			}
 		}
 	}])
@@ -124,12 +95,9 @@ angular.module('loop.directives.survey', [])
 			restrict: 'E',
 			templateUrl: "views/questions/edit/ranking.html",
 			scope: {
-				question: "=",
-				options: "="
+				question: "="
 			},
 			controller: function ($scope) {
-
-				$scope.newChoice = {};
 
 				$scope.moveChoice = function (choice, fromIndex, toIndex) {
 					$scope.question.choices.splice(fromIndex, 1);
@@ -141,40 +109,13 @@ angular.module('loop.directives.survey', [])
 				};
 
 				$scope.addChoice = function () {
-					if ($scope.newChoice.text) {
-						$scope.question.choices.push($scope.newChoice);
-						$scope.newChoice = {};
-					}
+					$scope.question.choices.push({
+						text: ""
+					});
 				};
 
-				$scope.editItem = function (choice){
-					$scope.draftChoice = {};
-					$scope.draftChoice.text = choice.text;
-
-					var editChoicePopup = $ionicPopup.show({
-						template: '<textarea type="text" autofocus rows="2" ng-model="draftChoice.text"></textarea>',
-						title: 'Edit Choice',
-						scope: $scope,
-						buttons: [
-							{ text: 'Cancel' },
-							{
-								text: '<b>Edit</b>',
-								type: 'button-positive',
-								onTap: function(e) {
-									if (!$scope.draftChoice.text) {
-										// prevents closing the popup if textarea is blank
-										e.preventDefault();
-									} else {
-										return $scope.draftChoice;
-									}
-								}
-							}
-						]
-					});
-					editChoicePopup.then(function(res){
-						choice.text = res.text;
-					});
-				}
+				if($scope.question.choices.length == 0)
+					$scope.addChoice();
 			}
 		}
 	}])

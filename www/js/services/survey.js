@@ -207,7 +207,7 @@ App.service('Survey', function () {
 	return self;
 });
 
-App.service('CreateSurveyService', function ($ionicPopup, $state) {
+App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 	var _questions = [];
 	var _surveyName = "";
 	var _description = "";
@@ -291,38 +291,33 @@ App.service('CreateSurveyService', function ($ionicPopup, $state) {
 		this.setSurveyInfo(surveyInfo);
 	};
 
-	this.exitSurveyPopup = function(){
-		$ionicPopup.show({
-			title: "Exiting Survey",
-			template: "<p>Save as draft, delete progress or cancel.</p>",
-			cssClass: 'exit-survey-popup',
-			buttons: [
-				{
-					text: 'Delete',
-					type: 'button-assertive',
-					onTap: function (e) {
-						resetSurvey();
-						$state.go("app.home");
-					}
-				},
-				{
-					text: 'Cancel',
-					type: 'button-stable',
-					onTap: function (e) {
-					}
-				},
-				{
-					text: 'Save',
-					type: 'button-calm',
-					onTap: function (e) {
-						resetSurvey();
-						$state.go('app.mySurveys');
-					}
-				},
+	this.resetSurvey = resetSurvey;
 
-			]
-		})
-	}
+	this.exitSurveyPopup = function(){
+		$ionicActionSheet.show({
+			buttons: [
+				{text: 'Save'},
+			],
+			cancelText: 'Cancel',
+			cancel: function() {
+				return true;
+			},
+			titleText: 'Exiting Survey',
+			destructiveText: 'Delete',
+			destructiveButtonClicked: function () {
+				resetSurvey();
+				$state.go("app.home");
+				return true;
+			},
+			buttonClicked: function(index){
+				switch (index){
+					case 0:
+					resetSurvey();
+					$state.go('app.mySurveys');
+				}
+			}
+		});
+	};
 
 	function resetSurvey(){
 		_questions = [];
@@ -374,6 +369,8 @@ App.factory('QuestionFactory', function () {
 				return "Please fill out the question field";
 			if (this.choices.length <= 1)
 				return "Must have 2 or more choices";
+			if(!validTextChoices(this.choices))
+				return "Choices can't be blank";
 		}
 	};
 
@@ -387,6 +384,8 @@ App.factory('QuestionFactory', function () {
 				return "Please fill out the question field";
 			if (this.choices.length <= 1)
 				return "Must have 2 or more choices";
+			if(!validTextChoices(this.choices))
+				return "Choices can't be blank";
 		}
 	};
 
@@ -458,6 +457,14 @@ App.factory('QuestionFactory', function () {
 		return !isNaN(value) &&
 			parseInt(Number(value)) == value &&
 			!isNaN(parseInt(value, 10));
+	}
+
+	function validTextChoices(choices){
+		for(var i = 0; i < choices.length; i++){
+			if(!choices[i].text)
+				return false
+		}
+		return true;
 	}
 
 	return {

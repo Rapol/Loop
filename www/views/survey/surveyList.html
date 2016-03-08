@@ -1,15 +1,15 @@
 <div class="list card">
-    <div ng-repeat="survey in surveys" class="item item-avatar item-header-padding avatar-centralized avatar-large" ui-sref="app.surveyStats">
-        <img ng-src="{{survey.img}}">
+    <div ng-repeat="survey in surveys" class="item item-avatar item-header-padding avatar-centralized avatar-large">
+        <img ng-src="{{survey.img}}" ui-sref="app.loopProfile">
 
-        <div class="item-header-text">
+        <div class="item-header-text" ui-sref="surveyFlow({surveyId: '-1'})">
             <h2>{{survey.title}}</h2>
 
             <h3>{{survey.loopName}}</h3>
 
             <p>{{survey.user}}</p>
         </div>
-        <div class="item-header-stats text-center">
+        <div class="item-header-stats text-center" ui-sref="app.surveyStats">
             <button class="button button-medium button-clear">
                 <i class="fa fa-pie-chart fa-lg calm"></i>
             </button>
