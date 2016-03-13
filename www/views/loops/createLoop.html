@@ -5,6 +5,9 @@
     </ion-nav-buttons>
     <ion-content class="padding" ng-class="{'has-footer' : platform != 'android'}">
         <div class="card card-form">
+            <div class="item item-divider">
+                General Information
+            </div>
             <div class="item">
                 <h2 class="form-title require">Name</h2>
                 <label class="item item-input">
@@ -16,13 +19,17 @@
                     <textarea rows="1" elastic></textarea>
                 </label>
             </div>
+            <div class="item item-divider">
+                Picture
+            </div>
             <div class="item">
-                <h2 class="form-title">Photo</h2>
-
                 <div class="center-image circle-border add-photo" ng-click="choosePhoto()">
-                    <p ng-if="!imgURI"> Tap to add <br>Photo</p>
+                    <p ng-if="!imgURI"> Tap to add<br>Picture</p>
                     <img ng-if="imgURI" class="center-image circle-border add-photo" ng-src="{{imgURI}}"/>
                 </div>
+            </div>
+            <div class="item item-divider">
+                Settings
             </div>
             <div class="item item-toggle">
                 Private

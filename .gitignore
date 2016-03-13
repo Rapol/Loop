@@ -13,6 +13,8 @@ typings/
 ## JS libraries
 **/lib
 
+**/www/css
+
 # Ionic
 **/.io-config.json
 

@@ -50,9 +50,6 @@ App.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionS
 		$scope.next = false;
 		$scope.back = false;
 
-		// Show edit button depending on question type
-		$scope.editButton = showEditButton($scope.question.questionType);
-
 		$scope.exitSurvey = function () {
 			CreateSurveyService.exitSurveyPopup();
 		};
@@ -77,7 +74,6 @@ App.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionS
 				CreateSurveyService.popQuestion();
 				$scope.questionNumber = CreateSurveyService.getQuestionsLength();
 				$scope.question = CreateSurveyService.getQuestion($scope.questionNumber - 1);
-				$scope.editButton = showEditButton($scope.question.questionType);
 			}, 375);
 			$timeout(function () {
 				$scope.back = false;
@@ -103,7 +99,6 @@ App.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionS
 				$scope.question = new QuestionFactory.Question(CreateSurveyService.newQuestionType);
 				CreateSurveyService.addQuestion($scope.question);
 				$scope.questionNumber = CreateSurveyService.getQuestionsLength();
-				$scope.editButton = showEditButton($scope.question.questionType);
 			}, 375);
 			$timeout(function () {
 				$scope.next = false;
@@ -140,7 +135,7 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 		};
 
 		$scope.createSurvey = function () {
-			var loading = $ionicLoading.show({
+			$ionicLoading.show({
 				template: '<ion-spinner icon="crescent"></ion-spinner>Creating survey...'
 			});
 
@@ -149,7 +144,7 @@ App.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet
 			CreateSurveyService.resetSurvey();
 
 			$timeout(function () {
-					loading.hide();
+					$ionicLoading.hide();
 					$ionicPopup.show({
 						template: '<div class="survey-created"><i class="icon ion-checkmark-circled"></i></div>',
 						title: 'Survey Created',
@@ -245,8 +240,6 @@ App.controller('addQuestionController', ['$scope', '$ionicHistory', '$ionicPopup
 
 		$scope.questionNumber = CreateSurveyService.getQuestionsLength();
 
-		$scope.editButton = showEditButton($scope.question.questionType);
-
 		$scope.addQuestion = function () {
 			var result = $scope.question.validateQuestion();
 			if (result)
@@ -269,8 +262,6 @@ App.controller('editQuestionController', ['$scope', '$ionicHistory', '$ionicPopu
 		$scope.question = {};
 
 		angular.copy(CreateSurveyService.getQuestion($scope.questionNumber), $scope.question);
-
-		$scope.editButton = showEditButton($scope.question.questionType);
 
 		$scope.saveQuestion = function () {
 			var result = $scope.question.validateQuestion();
@@ -358,8 +349,4 @@ function setQuestionType(index, CreateSurveyService) {
 			CreateSurveyService.newQuestionType = "numberBox";
 			break;
 	}
-}
-
-function showEditButton(questionType) {
-	return (questionType == "ranking" || questionType == "multipleChoice");
 }

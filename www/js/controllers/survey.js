@@ -1,7 +1,7 @@
 var App = angular.module('loop.controllers.survey', []);
 
-App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', '$ionicLoading', '$timeout', '$state', '$ionicModal', '$ionicHistory', 'CreateSurveyService', 'Survey',
-	function ($scope, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, $state, $ionicModal, $ionicHistory, CreateSurveyService, Survey) {
+App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', '$ionicLoading', '$timeout', '$state', '$ionicModal', '$ionicHistory', 'CreateSurveyService', 'Survey', 'SurveyTakingService',
+	function ($scope, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, $state, $ionicModal, $ionicHistory, CreateSurveyService, Survey, SurveyTakingService) {
 		var surveyId = parseInt($stateParams.surveyId);
 		if (surveyId != -1) {
 			$scope.questions = Survey.createdSurveys[surveyId].questions;
@@ -11,6 +11,8 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 				{
 					"questionType": "ranking",
 					"title": "How would you rate your overall satisfaction with us?",
+					"required": true,
+					"randomize": false,
 					"choices": [
 						{
 							"text": "hello"
@@ -26,18 +28,21 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 				{
 					"questionType": "numberBox",
 					"title": "How many times have you fallen out of your bed?",
+					"required": true,
 					"minNumber": 0,
 					"maxNumber": 140
 				},
 				{
 					"questionType": "textBox",
 					"title": "How likely is it that you would recommend us to a friend/colleague?",
+					"required": true,
 					"minChars": 0,
 					"maxChars": 140
 				},
 				{
 					"questionType": "sliderScale",
 					"title": "Would you go again sky diving?",
+					"required": true,
 					"scale": {
 						"name": "Agreement",
 						"steps": [
@@ -52,6 +57,9 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 				{
 					"questionType": "multipleChoice",
 					"title": "What's your favorite pet?",
+					"required": true,
+					"multipleSelections": false,
+					"randomize": false,
 					"choices": [
 						{
 							"text": "hello"
@@ -73,7 +81,14 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 
 
 		$scope.goRight = function () {
-			if ($scope.currentIndex < $scope.questions.length - 1) {
+			var result = SurveyTakingService.validateAnswer($scope.question);
+			if(result){
+				$ionicPopup.alert({
+					title: 'Answer Invalid',
+					template: result
+				});
+			}
+			else{
 				$scope.question = $scope.questions[++$scope.currentIndex];
 			}
 		};
@@ -82,38 +97,46 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 			if ($scope.currentIndex > 0) {
 				$scope.question = $scope.questions[--$scope.currentIndex];
 			}
-		}
+		};
 
 		$scope.submitSurvey = function(){
-			var loading = $ionicLoading.show({
-				template: '<ion-spinner icon="crescent"></ion-spinner>Submiting survey...'
-			});
-
-			$timeout(function () {
-					loading.hide();
-					$ionicPopup.show({
-						template: '<div class="survey-created"><h3>Thank you!</h3></div>',
-						title: 'Survey Submitted',
-						buttons: [
-							{
-								text: 'Share',
-								type: 'button-energized',
-								onTap: function(e) {
-									e.preventDefault()
+			var result = SurveyTakingService.validateAnswer($scope.question);
+			if(result){
+				$ionicPopup.alert({
+					title: 'Answer Invalid',
+					template: result
+				});
+			}
+			else{
+				$ionicLoading.show({
+					template: '<ion-spinner icon="crescent"></ion-spinner>Submiting survey...'
+				});
+				$timeout(function () {
+						$ionicLoading.hide();
+						$ionicPopup.show({
+							template: '<div class="survey-created"><h3>Thank you!</h3></div>',
+							title: 'Survey Submitted',
+							buttons: [
+								{
+									text: 'Share',
+									type: 'button-energized',
+									onTap: function(e) {
+										e.preventDefault()
+									}
+								},
+								{
+									text: 'Home',
+									type: 'button-calm',
+									onTap: function(e) {
+										$state.go('app.home');
+									}
 								}
-							},
-							{
-								text: 'Home',
-								type: 'button-calm',
-								onTap: function(e) {
-									$state.go('app.home');
-								}
-							}
-						]
-					});
-				},
-				2000);
-		}
+							]
+						});
+					},
+					2000);
+			}
+		};
 
 		$scope.showSurveyInfo = function (){
 			$ionicModal.fromTemplateUrl('views/survey/surveyInfoModal.html', {
@@ -123,15 +146,15 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 				$scope.surveyInfoModal = modal;
 				$scope.surveyInfoModal.show();
 			});
-		}
+		};
 
 		$scope.closeSurveyInfoModal = function(){
 			$scope.surveyInfoModal.hide();
-		}
+		};
 
 		$scope.goBack = function(){
 			$ionicHistory.goBack();
-		}
+		};
 	}]);
 
 App.controller('surveyStatsController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', 'CreateSurveyService', 'Survey',

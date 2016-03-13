@@ -65,15 +65,15 @@ App.controller('sidebarController', ['$scope', '$window', '$state', '$ionicSideM
 			$cordovaBarcodeScanner
 				.scan()
 				.then(function (result) {
-					if(!result.cancelled)
-					{
-						alert("Barcode type is: " + result.format);
-						alert("Decoded text is: " + result.text);
-					}
-					else
-					{
-						alert("You have cancelled scan");
-					}
+					//if(!result.cancelled)
+					//{
+					//	alert("Barcode type is: " + result.format);
+					//	alert("Decoded text is: " + result.text);
+					//}
+					//else
+					//{
+					//	alert("You have cancelled scan");
+					//}
 				}, function (error) {
 					// An error occurred
 				});

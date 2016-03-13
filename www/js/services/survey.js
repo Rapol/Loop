@@ -272,18 +272,7 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 		return _questions;
 	};
 
-	this.deleteQuestions = function () {
-		_questions = [];
-	}
-
-	this.countCheckedChoices = function(array) {
-		var checkedCounter = 0;
-		angular.forEach(array, function (value, key) {
-			if (value.checked)
-				checkedCounter++;
-		});
-		return checkedCounter;
-	}
+	this.countCheckedChoices = countCheckedChoices;
 
 	this.saveSurvey = function(surveyInfo){
 		surveyInfo.loopsAssign = getCheckedItems(surveyInfo.loopsAssign);
@@ -363,6 +352,8 @@ App.factory('QuestionFactory', function () {
 		this.questionType = "ranking";
 		this.title = "";
 		this.choices = [];
+		this.required = true;
+		this.randomize = false;
 
 		this.validateQuestion = function(){
 			if (!this.title)
@@ -378,6 +369,9 @@ App.factory('QuestionFactory', function () {
 		this.questionType = "multipleChoice";
 		this.title = "";
 		this.choices = [];
+		this.required = true;
+		this.randomize = false;
+		this.multipleSelections = false;
 
 		this.validateQuestion = function(){
 			if (!this.title)
@@ -395,6 +389,7 @@ App.factory('QuestionFactory', function () {
 		this.text = "";
 		this.minChars = 0;
 		this.maxChars = 140;
+		this.required = true;
 
 		this.validateQuestion = function(){
 			if (!this.title)
@@ -422,7 +417,8 @@ App.factory('QuestionFactory', function () {
 		this.title = "";
 		this.number = null;
 		this.minNumber = 0;
-		this.maxNumber = 140;
+		this.maxNumber = 256;
+		this.required = true;
 
 		this.validateQuestion = function(){
 			if (!this.title)
@@ -443,6 +439,7 @@ App.factory('QuestionFactory', function () {
 		this.questionType = "sliderScale";
 		this.title = "";
 		this.scale = {};
+		this.required = true;
 
 		this.validateQuestion = function(){
 			if (!this.title)
@@ -452,12 +449,6 @@ App.factory('QuestionFactory', function () {
 			}
 		}
 	};
-
-	function isInt(value) {
-		return !isNaN(value) &&
-			parseInt(Number(value)) == value &&
-			!isNaN(parseInt(value, 10));
-	}
 
 	function validTextChoices(choices){
 		for(var i = 0; i < choices.length; i++){
@@ -471,3 +462,57 @@ App.factory('QuestionFactory', function () {
 		Question: QuestionFactory
 	};
 });
+
+App.service('SurveyTakingService', function () {
+
+	this.validateAnswer = function(question){
+		switch(question.questionType){
+			case "ranking":
+				break;
+			case "multipleChoice":
+				var checkedCounter = countCheckedChoices(question.choices);
+				if(checkedCounter == 0 && question.required)
+					return "Question is required";
+				if(checkedCounter > 1 && !question.multipleSelections)
+					return "Please select only one choice";
+				break;
+			case "textBox":
+				if(!question.text && question.required)
+					return "Question is required";
+				if(question.text.length > question.maxChars)
+					return "Answer's length must be less than or equal to " + question.maxChars + " characters";
+				if(question.text.length < question.minChars)
+					return "Answer must be at least " + question.minChars + " characters long";
+				break;
+			case "numberBox":
+				if(!question.number && question.required)
+					return "Question is required";
+				if(!isInt(question.number))
+					return "Please enter a valid integer";
+				question.number = parseInt(question.number);
+				if(question.number < question.minNumber)
+					return "Answer must be larger than or equal to " + question.minNumber;
+				if(question.number > question.maxNumber)
+					return "Answer must be less than or equal to " + question.maxNumber;
+				break;
+			case "scale":
+				break;
+
+		}
+	}
+});
+
+function countCheckedChoices(array){
+	var checkedCounter = 0;
+	angular.forEach(array, function (value, key) {
+		if (value.checked)
+			checkedCounter++;
+	});
+	return checkedCounter;
+}
+
+function isInt(value) {
+	return !isNaN(value) &&
+		parseInt(Number(value)) == value &&
+		!isNaN(parseInt(value, 10));
+}
