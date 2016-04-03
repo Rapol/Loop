@@ -1,6 +1,6 @@
 var App = angular.module('loop.controllers.home', []);
 
-App.controller('sidebarController', ['$scope', '$window', '$state', '$ionicSideMenuDelegate', '$ionicViewSwitcher', '$ionicPlatform', '$cordovaBarcodeScanner', function($scope, $window, $state, $ionicSideMenuDelegate, $ionicViewSwitcher, $ionicPlatform, $cordovaBarcodeScanner){
+App.controller('sidebarController', ['$scope', '$state', '$ionicSideMenuDelegate', '$ionicViewSwitcher', '$ionicPlatform', '$cordovaBarcodeScanner', 'Session', function($scope, $state, $ionicSideMenuDelegate, $ionicViewSwitcher, $ionicPlatform, $cordovaBarcodeScanner, Session){
 	$scope.user = {};
 
 	$scope.searchResults = [
@@ -47,17 +47,15 @@ App.controller('sidebarController', ['$scope', '$window', '$state', '$ionicSideM
 	];
 
 	$scope.$on('$ionicView.enter', function () {
-		$scope.user.firstName = $window.sessionStorage.firstName;
-		$scope.user.lastName = $window.sessionStorage.lastName;
+		$scope.user.firstName = Session.firstName;
+		$scope.user.lastName = Session.lastName;
 	});
 
 	$scope.signOut = function () {
-		$window.sessionStorage.email = '';
-		$window.sessionStorage.firstName = '';
-		$window.sessionStorage.lastName = '';
+		Session.destroy();
 		$ionicSideMenuDelegate.toggleLeft();
 		$ionicViewSwitcher.nextDirection('back');
-		$state.go('splashScreen');
+		$state.go('login');
 	};
 
 	$scope.qrScan = function () {
@@ -65,17 +63,7 @@ App.controller('sidebarController', ['$scope', '$window', '$state', '$ionicSideM
 			$cordovaBarcodeScanner
 				.scan()
 				.then(function (result) {
-					//if(!result.cancelled)
-					//{
-					//	alert("Barcode type is: " + result.format);
-					//	alert("Decoded text is: " + result.text);
-					//}
-					//else
-					//{
-					//	alert("You have cancelled scan");
-					//}
 				}, function (error) {
-					// An error occurred
 				});
 		});
 	}

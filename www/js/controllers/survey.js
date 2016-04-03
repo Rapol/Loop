@@ -12,16 +12,16 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 					"questionType": "ranking",
 					"title": "How would you rate your overall satisfaction with us?",
 					"required": true,
-					"randomize": false,
+					"randomize": true,
 					"choices": [
 						{
-							"text": "hello"
+							"text": "1"
 						},
 						{
-							"text": "hi"
+							"text": "2"
 						},
 						{
-							"text": "yo"
+							"text": "3"
 						}
 					]
 				},
@@ -59,16 +59,16 @@ App.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory
 					"title": "What's your favorite pet?",
 					"required": true,
 					"multipleSelections": false,
-					"randomize": false,
+					"randomize": true,
 					"choices": [
 						{
-							"text": "hello"
+							"text": "1"
 						},
 						{
-							"text": "hi"
+							"text": "2"
 						},
 						{
-							"text": "yo"
+							"text": "3"
 						}
 					]
 				}

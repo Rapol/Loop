@@ -130,13 +130,15 @@ angular.module('App',
 				url: '/addFriend',
 				templateUrl: 'views/friend/addFriend.html'
 			})
-			.state('splashScreen', {
-				url: '/splashScreen',
+			.state('login', {
+				url: '/login',
+				cache: false,
 				templateUrl: 'views/login/login.html',
 				controller: 'loginController'
 			})
 			.state('signup', {
 				url: '/signup',
+				cache: false,
 				templateUrl: 'views/login/signup.html',
 				controller: 'signupController'
 			});

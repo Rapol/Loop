@@ -279,6 +279,24 @@ angular.module('loop.directives.survey', [])
 			templateUrl: "views/questions/answer/multipleChoice.html",
 			scope: {
 				question: "="
+			},
+			controller: function($scope){
+				if($scope.question.randomize && !$scope.question.isRandomized){
+					$scope.question.choices = shuffle($scope.question.choices);
+					$scope.question.isRandomized = true;
+				}
+				var lastChoice = { checked: false };
+				$scope.checkMultipleSelection = function(choice) {
+					console.log(choice);
+					if (lastChoice.checked) {
+						console.log("Last choice is selected");
+						if (!$scope.question.multipleSelections && lastChoice.checked) {
+							console.log("Reverting last choice");
+							lastChoice.checked = false;
+						}
+					}
+					lastChoice = choice;
+				};
 			}
 		}
 	}])
@@ -303,6 +321,11 @@ angular.module('loop.directives.survey', [])
 				question: "="
 			},
 			controller: function($scope){
+				console.log($scope.question.isRandomized)
+				if($scope.question.randomize && !$scope.question.isRandomized){
+					$scope.question.choices = shuffle($scope.question.choices);
+					$scope.question.isRandomized = true;
+				}
 				$scope.moveChoice = function (choice, fromIndex, toIndex) {
 					$scope.question.choices.splice(fromIndex, 1);
 					$scope.question.choices.splice(toIndex, 0, choice);
@@ -318,4 +341,23 @@ angular.module('loop.directives.survey', [])
 				surveys: "="
 			}
 		}
-	}])
+	}]);
+
+function shuffle(array) {
+	var currentIndex = array.length, temporaryValue, randomIndex;
+
+	// While there remain elements to shuffle...
+	while (0 !== currentIndex) {
+
+		// Pick a remaining element...
+		randomIndex = Math.floor(Math.random() * currentIndex);
+		currentIndex -= 1;
+
+		// And swap it with the current element.
+		temporaryValue = array[currentIndex];
+		array[currentIndex] = array[randomIndex];
+		array[randomIndex] = temporaryValue;
+	}
+
+	return array;
+}

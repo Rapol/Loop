@@ -19,14 +19,23 @@
         <button class="button button-clear icon-right ion-checkmark-round" ng-click="submitSurvey()">Finish</button>
     </div>
     <ion-content class="padding has-header has-footer">
-        <div class="survey-question-content">
-            <h4>{{question.title}}</h4>
-            <div ng-switch="question.questionType">
-                <answer-ranking ng-switch-when="ranking" question="question"></answer-ranking>
-                <answer-text-box ng-switch-when="textBox" question="question"></answer-text-box>
-                <answer-slider-scale ng-switch-when="sliderScale" question="question"></answer-slider-scale>
-                <answer-multiple-choice ng-switch-when="multipleChoice" question="question"></answer-multiple-choice>
-                <answer-number-box ng-switch-when="numberBox" question="question"></answer-number-box>
+        <div class="card-answer">
+            <div class="card card-form">
+                <div class="item item-text-wrap item-question-title">
+                    <h2>{{question.title}}</h2>
+                </div>
+                <div class="item">
+                    <div ng-switch="question.questionType">
+                        <answer-ranking ng-switch-when="ranking" question="question"></answer-ranking>
+                        <answer-text-box ng-switch-when="textBox" question="question"></answer-text-box>
+                        <answer-slider-scale ng-switch-when="sliderScale" question="question"></answer-slider-scale>
+                        <answer-multiple-choice ng-switch-when="multipleChoice" question="question"></answer-multiple-choice>
+                        <answer-number-box ng-switch-when="numberBox" question="question"></answer-number-box>
+                    </div>
+                </div>
+                <div class="item question-required" ng-if="question.required">
+                    Required
+                </div>
             </div>
         </div>
     </ion-content>

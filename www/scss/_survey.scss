@@ -1,10 +1,23 @@
-.survey-question-content {
-  padding-top: 10px;
-  > h4 {
-    margin: 10px 10px 30px 10px;
-    font-size: 20px;
+.card-answer{
+  padding-top: 5vh;
+}
+
+.question-required{
+  text-align: center;
+  background-color: #fff;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  font-weight: 500;
+}
+
+.item-question-title {
+  > h2 {
+    font-size: 18px;
     min-height: 2em;
   }
+}
+
+.item-list {
   .list {
     margin: 0px;
   }
@@ -18,14 +31,14 @@
   }
 }
 
-.answer-ranking-choices {
+.item-ranking-choices {
   .item-content {
     padding: 0px 0px 0px 10px;
     min-height: 52px;
   }
 }
 
-.answer-ranking-number-header {
+.item-ranking-header {
   position: absolute;
   left: 0px;
   width: 25px;
@@ -38,24 +51,30 @@
   }
 }
 
-.answer-ranking-text {
+.item-ranking-text {
   position: relative;
   padding: 10px 80px 10px 0px;
   left: 25px;
 }
 
-.answer-slider-scale .item{
-  border-width: 0px;
-}
-
-.answer-slider-scale i{
-  font-size: 120px;
-  margin-top: 30px;
+.item-slider-scale {
+  margin-top: 20px;
 }
 
 .checkbox-energized input:before, .checkbox-energized .checkbox-icon:before{
   border-color: #ddd;
 }
+
+.label-subdued{
+  padding-top: 3px;
+  padding-right: 5px;
+  > span{
+    font-size: 12px;
+    color: #888;
+  }
+}
+
+// Stats page
 
 span.circle-number {
   background: $calm;

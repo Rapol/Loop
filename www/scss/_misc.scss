@@ -57,3 +57,11 @@ ion-content {
 .calm-background {
   background-color: $calm;
 }
+
+.has-error {
+  border-left: 5px solid $energized !important;
+}
+
+.has-success {
+  border-left: 5px solid $calm !important;
+}
