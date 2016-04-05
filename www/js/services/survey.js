@@ -30,7 +30,7 @@ App.service('Survey', function () {
 				"img": "img/jon_snow.jpg",
 				"loopName": "Watchers of the wall",
 				"title": "WHY JON SNOW , ANSWER ME RRM"
-			},
+			}
 		],
 		market: [
 			{
@@ -202,14 +202,14 @@ App.service('Survey', function () {
 				icon: 'ion-arrow-up-c'
 			}
 		]
-	}
+	};
 
 	return self;
 });
 
 App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 	var _questions = [];
-	var _surveyName = "";
+	var _name = "";
 	var _description = "";
 	var _loopsAssign = [];
 	var _attributesAssign = [];
@@ -218,7 +218,7 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 
 	this.getSurveyInfo = function () {
 		return {
-			surveyName: _surveyName,
+			name: _name,
 			description: _description,
 			loopsAssign: _loopsAssign,
 			attributesAssign: _attributesAssign
@@ -226,21 +226,21 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 	};
 
 	this.setSurveyInfo = function (surveyInfo) {
-		_surveyName = surveyInfo.surveyName;
+		_name = surveyInfo.name;
 		_description = surveyInfo.description;
 		_loopsAssign = surveyInfo.loopsAssign;
 		_attributesAssign = surveyInfo.attributesAssign;
 	};
 
-	this.getSurvey = function(){
+	this.getSurvey = function () {
 		return {
-			surveyName: _surveyName,
+			name: _name,
 			description: _description,
 			loopsAssign: _loopsAssign,
 			attributesAssign: _attributesAssign,
 			questions: _questions
 		}
-	}
+	};
 
 	this.getQuestion = function (index) {
 		if (index >= _questions.length || index < 0)
@@ -268,27 +268,31 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 		return _questions.length;
 	};
 
-	this.getQuestions = function () {
-		return _questions;
-	};
-
 	this.countCheckedChoices = countCheckedChoices;
 
-	this.saveSurvey = function(surveyInfo){
+	this.saveSurveyInfo = function (surveyInfo) {
 		surveyInfo.loopsAssign = getCheckedItems(surveyInfo.loopsAssign);
 		surveyInfo.attributesAssign = getCheckedItems(surveyInfo.attributesAssign);
 		this.setSurveyInfo(surveyInfo);
 	};
 
+	this.saveSurvey = function(survey){
+		_name = survey.name;
+		_description = survey.description;
+		_loopsAssign = survey.loopsAssign;
+		_attributesAssign = survey.attributesAssign;
+		_questions = survey.questions;
+	};
+
 	this.resetSurvey = resetSurvey;
 
-	this.exitSurveyPopup = function(){
+	this.exitSurveyPopup = function () {
 		$ionicActionSheet.show({
 			buttons: [
 				{text: 'Save'},
 			],
 			cancelText: 'Cancel',
-			cancel: function() {
+			cancel: function () {
 				return true;
 			},
 			titleText: 'Exiting Survey',
@@ -298,19 +302,19 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 				$state.go("app.home");
 				return true;
 			},
-			buttonClicked: function(index){
-				switch (index){
+			buttonClicked: function (index) {
+				switch (index) {
 					case 0:
-					resetSurvey();
-					$state.go('app.mySurveys');
+						resetSurvey();
+						$state.go('app.mySurveys');
 				}
 			}
 		});
 	};
 
-	function resetSurvey(){
+	function resetSurvey() {
 		_questions = [];
-		_surveyName = "";
+		_name = "";
 		_description = "";
 		_loopsAssign = [];
 		_attributesAssign = [];
@@ -334,7 +338,7 @@ App.factory('QuestionFactory', function () {
 		if (questionType == "ranking") {
 			return new Ranking();
 		}
-		else if(questionType == "multipleChoice"){
+		else if (questionType == "multipleChoice") {
 			return new MultipleChoice();
 		}
 		else if (questionType == "textBox") {
@@ -355,12 +359,12 @@ App.factory('QuestionFactory', function () {
 		this.required = true;
 		this.randomize = false;
 
-		this.validateQuestion = function(){
+		this.validateQuestion = function () {
 			if (!this.title)
 				return "Please fill out the question field";
 			if (this.choices.length <= 1)
 				return "Must have 2 or more choices";
-			if(!validTextChoices(this.choices))
+			if (!validTextChoices(this.choices))
 				return "Choices can't be blank";
 		}
 	};
@@ -373,12 +377,12 @@ App.factory('QuestionFactory', function () {
 		this.randomize = false;
 		this.multipleSelections = false;
 
-		this.validateQuestion = function(){
+		this.validateQuestion = function () {
 			if (!this.title)
 				return "Please fill out the question field";
 			if (this.choices.length <= 1)
 				return "Must have 2 or more choices";
-			if(!validTextChoices(this.choices))
+			if (!validTextChoices(this.choices))
 				return "Choices can't be blank";
 		}
 	};
@@ -391,10 +395,10 @@ App.factory('QuestionFactory', function () {
 		this.maxChars = 140;
 		this.required = true;
 
-		this.validateQuestion = function(){
+		this.validateQuestion = function () {
 			if (!this.title)
 				return "Please fill out the question field";
-			if(!isInt(this.minChars) || !isInt(this.maxChars))
+			if (!isInt(this.minChars) || !isInt(this.maxChars))
 				return "Please enter valid integers in the fields";
 
 			this.minChars = parseInt(this.minChars);
@@ -420,10 +424,10 @@ App.factory('QuestionFactory', function () {
 		this.maxNumber = 256;
 		this.required = true;
 
-		this.validateQuestion = function(){
+		this.validateQuestion = function () {
 			if (!this.title)
 				return "Please fill out the question field";
-			if(!isInt(this.minNumber) || !isInt(this.maxNumber))
+			if (!isInt(this.minNumber) || !isInt(this.maxNumber))
 				return "Please enter valid integers in the fields";
 
 			this.minNumber = parseInt(this.minNumber);
@@ -441,7 +445,7 @@ App.factory('QuestionFactory', function () {
 		this.scale = {};
 		this.required = true;
 
-		this.validateQuestion = function(){
+		this.validateQuestion = function () {
 			if (!this.title)
 				return "Please fill out the question field";
 			if (!this.scale.name) {
@@ -450,9 +454,9 @@ App.factory('QuestionFactory', function () {
 		}
 	};
 
-	function validTextChoices(choices){
-		for(var i = 0; i < choices.length; i++){
-			if(!choices[i].text)
+	function validTextChoices(choices) {
+		for (var i = 0; i < choices.length; i++) {
+			if (!choices[i].text)
 				return false
 		}
 		return true;
@@ -465,34 +469,34 @@ App.factory('QuestionFactory', function () {
 
 App.service('SurveyTakingService', function () {
 
-	this.validateAnswer = function(question){
-		switch(question.questionType){
+	this.validateAnswer = function (question) {
+		switch (question.questionType) {
 			case "ranking":
 				break;
 			case "multipleChoice":
 				var checkedCounter = countCheckedChoices(question.choices);
-				if(checkedCounter == 0 && question.required)
+				if (checkedCounter == 0 && question.required)
 					return "Question is required";
-				if(checkedCounter > 1 && !question.multipleSelections)
+				if (checkedCounter > 1 && !question.multipleSelections)
 					return "Please select only one choice";
 				break;
 			case "textBox":
-				if(!question.text && question.required)
+				if (!question.text && question.required)
 					return "Question is required";
-				if(question.text.length > question.maxChars)
+				if (question.text.length > question.maxChars)
 					return "Answer's length must be less than or equal to " + question.maxChars + " characters";
-				if(question.text.length < question.minChars)
+				if (question.text.length < question.minChars)
 					return "Answer must be at least " + question.minChars + " characters long";
 				break;
 			case "numberBox":
-				if(!question.number && question.required)
+				if (!question.number && question.required)
 					return "Question is required";
-				if(!isInt(question.number))
+				if (!isInt(question.number))
 					return "Please enter a valid integer";
 				question.number = parseInt(question.number);
-				if(question.number < question.minNumber)
+				if (question.number < question.minNumber)
 					return "Answer must be larger than or equal to " + question.minNumber;
-				if(question.number > question.maxNumber)
+				if (question.number > question.maxNumber)
 					return "Answer must be less than or equal to " + question.maxNumber;
 				break;
 			case "scale":
@@ -502,7 +506,91 @@ App.service('SurveyTakingService', function () {
 	}
 });
 
-function countCheckedChoices(array){
+App.service('SharedSurvey', function () {
+	var survey = {
+		questions: [
+			{
+				"questionType": "ranking",
+				"title": "How would you rate your overall satisfaction with us?",
+				"required": true,
+				"randomize": true,
+				"choices": [
+					{
+						"text": "1"
+					},
+					{
+						"text": "2"
+					},
+					{
+						"text": "3"
+					}
+				]
+			},
+			{
+				"questionType": "numberBox",
+				"title": "How many times have you fallen out of your bed?",
+				"required": true,
+				"minNumber": 0,
+				"maxNumber": 140
+			},
+			{
+				"questionType": "textBox",
+				"title": "How likely is it that you would recommend us to a friend/colleague?",
+				"required": true,
+				"minChars": 0,
+				"maxChars": 140
+			},
+			{
+				"questionType": "sliderScale",
+				"title": "Would you go again sky diving?",
+				"required": true,
+				"scale": {
+					"name": "Agreement",
+					"steps": [
+						"Strongly Disagree",
+						"Disagree",
+						"Neither Agree or Disagree",
+						"Agree",
+						"Strongly Agree"
+					]
+				}
+			},
+			{
+				"questionType": "multipleChoice",
+				"title": "What's your favorite pet?",
+				"required": true,
+				"multipleSelections": false,
+				"randomize": true,
+				"choices": [
+					{
+						"text": "1"
+					},
+					{
+						"text": "2"
+					},
+					{
+						"text": "3"
+					}
+				]
+			}
+		],
+		name: "Survey 1",
+		description: "Big description",
+		loopsAssign: [{name:"Public"}],
+		attributesAssign: []
+	};
+
+	return {
+		getSurvey: function () {
+			return survey;
+		},
+		setSurvey: function (value) {
+			survey = value;
+		}
+	};
+});
+
+function countCheckedChoices(array) {
 	var checkedCounter = 0;
 	angular.forEach(array, function (value, key) {
 		if (value.checked)
@@ -513,6 +601,5 @@ function countCheckedChoices(array){
 
 function isInt(value) {
 	return !isNaN(value) &&
-		parseInt(Number(value)) == value &&
-		!isNaN(parseInt(value, 10));
+		parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
 }

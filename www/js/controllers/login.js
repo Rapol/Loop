@@ -1,4 +1,4 @@
-angular.module('loop.controllers.authentication', [])
+angular.module('loop.controllers.login', [])
 	.controller('loginController', ['$scope', '$http', '$state', '$ionicViewSwitcher', '$ionicPopup', 'AuthService', function ($scope, $http, $state, $ionicViewSwitcher, $ionicPopup, AuthService) {
 		$scope.user = {};
 		var message = '';

@@ -19,7 +19,7 @@
         <tabs tabs="tabs" current-tab="currentTab"></tabs>
         <div ng-switch="currentTab.title">
             <survey-list ng-switch-when="Surveys" surveys="currentTab.content"></survey-list>
-            <div ng-switch-when="Members" class="card list">
+            <div ng-switch-when="Members" class="list list-top-borderless">
                 <div class="item item-avatar" ui-sref="app.profile" ng-repeat="member in currentTab.content">
                     <img ng-src="{{member.img}}">
                     <h2>{{member.firstName}}</h2>

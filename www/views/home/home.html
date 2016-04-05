@@ -12,15 +12,14 @@
             <span class="icon ion-plus-circled"></span>
         </button>
     </ion-nav-buttons>
-    <div class="bar bar-subheader">
+    <div class="bar bar-subheader bar-stable">
         <div class="button-bar">
-            <button class="button button-clear button-calm  icon-left" ng-click="typeButton()"
-                    ng-class="type[typeIndex].icon"><span class="energized nav-weight">{{type[typeIndex].name}}</span></button>
+            <button class="button button-clear button-calm icon-left" ng-click="typeButton()"
+                    ng-class="type[typeIndex].icon"><span class="nav-weight">{{type[typeIndex].name}}</span></button>
             <button class="button button-clear button-calm  icon-left" ng-click="locationButton()"
-                    ng-class="location[locationIndex].icon"><span
-                    class="energized nav-weight">{{location[locationIndex].name}}</span></button>
+                    ng-class="location[locationIndex].icon"><span class="nav-weight">{{location[locationIndex].name}}</span></button>
             <button class="button button-clear button-calm  icon-left" ng-click="popularityButton()"
-                    ng-class="popularity[popularityIndex].icon"><span class="energized nav-weight">{{popularity[popularityIndex].name}}</span>
+                    ng-class="popularity[popularityIndex].icon"><span class="nav-weight">{{popularity[popularityIndex].name}}</span>
             </button>
         </div>
     </div>
@@ -29,7 +28,7 @@
             <div class="item item-avatar item-header-padding avatar-centralized avatar-large">
                 <img src="img/blueOnWhiteLogo.png" ui-sref="app.loopProfile">
                 <div class="item-header-text" ui-sref="surveyFlow({surveyId: $index})">
-                    <h2>{{survey.surveyName}}</h2>
+                    <h2>{{survey.name}}</h2>
 
                     <h3>{{survey.loopsAssign[0].name}}</h3>
 

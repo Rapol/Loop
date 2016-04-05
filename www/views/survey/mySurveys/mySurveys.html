@@ -1,0 +1,22 @@
+<ion-view title="My Surveys" hide-back-button="true">
+    <ion-nav-buttons side="right">
+        <button class="button button-clear" ui-sref="app.createSurvey">
+            <span class="icon ion-plus-circled"></span>
+        </button>
+    </ion-nav-buttons>
+    <div class="bar bar-subheader bar-stable">
+        <div class="button-bar">
+            <button style="margin-right: 70px;" class="button button-clear button-calm icon-left" ng-class="surveyTypes[typeIndex].icon" ng-click="openTypePopover($event)">{{surveyTypes[typeIndex].name}}</button>
+            <button class="button button-clear button-calm icon-left" ng-class="surveyStatus[statusIndex].icon" ng-click="openStatusPopover($event)">{{surveyStatus[statusIndex].name}}</button>
+        </div>
+    </div>
+    <ion-content class="has-subheader" ng-class="{'has-footer' : platform != 'android'}" delegate-handle="mainScroll">
+        <div class="list list-div-borderless">
+            <div ng-repeat="survey in surveys" ng-switch="survey.status">
+                <open-survey-item ng-switch-when="open"></open-survey-item>
+                <completed-survey-item ng-switch-when="completed"></completed-survey-item>
+                <draft-survey-item ng-switch-when="draft" ng-click="editSurvey(survey)"></draft-survey-item>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>

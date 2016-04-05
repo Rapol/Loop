@@ -51,8 +51,14 @@ angular.module('App',
 			})
 			.state('app.mySurveys', {
 				url: '/mySurveys',
-				templateUrl: 'views/survey/mySurveys/surveysTab.html',
+				templateUrl: 'views/survey/mySurveys/mySurveys.html',
 				controller: 'mySurveysController'
+			})
+			.state('editMySurveys', {
+				url: '/editMySurveys',
+				cache: false,
+				templateUrl: 'views/survey/mySurveys/editMySurveys.html',
+				controller: 'mySurveysEditController'
 			})
 			.state('app.surveyStats', {
 				url: '/surveyStats',
