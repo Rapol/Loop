@@ -1,210 +1,58 @@
 var App = angular.module('loop.services.survey', []);
 
-App.service('Survey', function () {
-	var self = {
-		createdSurveys: [],
-		friends: [
-			{
-				"questionCount": 1,
-				"description": "Vote for the candidate you want to be our new president",
-				"answeredCount": 47,
-				"user": "Nicholas cage",
-				"img": "img/sig%20Ep.jpg",
-				"loopName": "Sig Ep",
-				"title": "Sig Ep president elections"
-			},
-			{
-				"questionCount": 14,
-				"description": "Where should we go for long weekend?",
-				"answeredCount": 5,
-				"user": "Planner friend",
-				"img": "img/longWeekend.png",
-				"loopName": "Long weekend plans",
-				"title": "Away with the peasantry"
-			},
-			{
-				"questionCount": 2,
-				"description": "Who killed the Lord commander of the night's watch",
-				"answeredCount": 10,
-				"user": "Ollie",
-				"img": "img/jon_snow.jpg",
-				"loopName": "Watchers of the wall",
-				"title": "WHY JON SNOW , ANSWER ME RRM"
-			}
-		],
-		market: [
-			{
-				"questionCount": 18,
-				"description": "Q1. How would you rate your last McDonald's visit?",
-				"answeredCount": 1213,
-				"user": "MCD Admin",
-				"img": "img/mcdonalds.jpg",
-				"loopName": "McDonald",
-				"title": "Win a free McChicken"
-			},
-			{
-				"questionCount": 18,
-				"description": "To spell your name right, ain't in my job description?",
-				"answeredCount": 8747,
-				"user": "Can't Spell my name",
-				"img": "img/starbucks.jpg",
-				"loopName": "Spelling bee champ",
-				"title": "Them:Your name please, me: it's Jatin, Then: sorry? me: it's Justin"
-			},
-			{
-				"questionCount": 14,
-				"description": "Ask Cesar about our latest specials like $4 meals",
-				"answeredCount": 97,
-				"user": "FOODIE......NOT",
-				"img": "img/wendys.png",
-				"loopName": "Wendy's ",
-				"title": "You think people only want our frosty"
-			},
-			{
-				"questionCount": 10,
-				"description": "Ya think we can't get away with a fraud?",
-				"answeredCount": 9851,
-				"user": "Kenneth Lay",
-				"img": "img/enron.jpg",
-				"loopName": "How not to fraud 101",
-				"title": "Oops they found out"
-			},
-			{
-				"questionCount": 5,
-				"description": "How do you like TGS with Tracy Jordan",
-				"answeredCount": 1007,
-				"user": "Kenneth Parcel",
-				"img": "img/30rock.jpg",
-				"loopName": "30 Rock",
-				"title": "Viewer survey"
-			},
-			{
-				"questionCount": 18,
-				"description": "enim laborum aute quis elit veniam qui fugiat sunt commodo",
-				"answeredCount": 12963,
-				"user": "Morse Mendoza",
-				"img": "img/falcons.png",
-				"loopName": "Atomica",
-				"title": "Aquacine Survey"
-			}
-		],
-		hot: [
-			{
-				"questionCount": 14,
-				"description": "anim laboris reprehenderit enim sint veniam do Lorem do dolore",
-				"answeredCount": 9754,
-				"user": "Odessa House",
-				"img": "img/falcons.png",
-				"loopName": "Makingway",
-				"title": "Medalert Survey"
-			},
-			{
-				"questionCount": 10,
-				"description": "in velit consequat consectetur proident sint in ad ipsum duis",
-				"answeredCount": 9851,
-				"user": "Juliette Jensen",
-				"img": "img/falcons.png",
-				"loopName": "Vendblend",
-				"title": "Katakana Survey"
-			},
-			{
-				"questionCount": 5,
-				"description": "culpa pariatur aliqua culpa est veniam ipsum esse dolore pariatur",
-				"answeredCount": 1007,
-				"user": "Monroe Cole",
-				"img": "img/falcons.png",
-				"loopName": "Colaire",
-				"title": "Automon Survey"
-			},
-			{
-				"questionCount": 18,
-				"description": "enim laborum aute quis elit veniam qui fugiat sunt commodo",
-				"answeredCount": 12963,
-				"user": "Morse Mendoza",
-				"img": "img/falcons.png",
-				"loopName": "Atomica",
-				"title": "Aquacine Survey"
-			}
-		],
-		newest: [
-			{
-				"questionCount": 18,
-				"description": "enim laborum aute quis elit veniam qui fugiat sunt commodo",
-				"answeredCount": 12963,
-				"user": "Morse Mendoza",
-				"img": "img/falcons.png",
-				"loopName": "Atomica",
-				"title": "Aquacine Survey"
-			}
-		],
-		global: [
-			{
-				"questionCount": 18,
-				"description": "enim laborum aute quis elit veniam qui fugiat sunt commodo",
-				"answeredCount": 12963,
-				"user": "Morse Mendoza",
-				"img": "img/falcons.png",
-				"loopName": "Atomica",
-				"title": "Aquacine Survey"
-			}
-		],
-		local: [
-			{
-				"questionCount": 18,
-				"description": "enim laborum aute quis elit veniam qui fugiat sunt commodo",
-				"answeredCount": 12963,
-				"user": "Morse Mendoza",
-				"img": "img/falcons.png",
-				"loopName": "Atomica",
-				"title": "Aquacine Survey"
-			},
-			{
-				"questionCount": 18,
-				"description": "enim laborum aute quis elit veniam qui fugiat sunt commodo",
-				"answeredCount": 12963,
-				"user": "Morse Mendoza",
-				"img": "img/falcons.png",
-				"loopName": "Atomica",
-				"title": "Aquacine Survey"
-			}
-		],
-		type: [
-			{
-				name: 'All',
-				icon: 'ion-android-funnel'
-			},
-			{
-				name: 'Friends',
-				icon: 'ion-android-people'
-			},
-			{
-				name: 'Market',
-				icon: 'ion-stats-bars'
-			}
-		],
-		location: [
-			{
-				name: 'Global',
-				icon: 'ion-earth'
-			},
-			{
-				name: 'Local',
-				icon: 'ion-location'
-			}
-		],
-		popularity: [
-			{
-				name: 'Hot',
-				icon: 'ion-fireball'
-			},
-			{
-				name: 'New',
-				icon: 'ion-arrow-up-c'
-			}
-		]
+App.service('Survey', function ($http, $resource, constants) {
+
+	var self = this;
+
+	self.page = 0;
+	self.isLoading = false;
+	self.hasMore = true;
+	self.query = {
+		type: "All",
+		location: "Global",
+		popularity: "Hot"
 	};
 
-	return self;
+	self.refresh = function () {
+		self.page = 0;
+		self.isLoading = false;
+		self.hasMore = true;
+		return self.load();
+	};
+
+	self.next = function () {
+		self.page += 1;
+		return self.load();
+	};
+
+	self.resetQuery = function(query){
+		self.query = query;
+		self.page = 0;
+		return self.load();
+	};
+
+	self.load = function () {
+		self.isLoading = true;
+		var params = {
+			page: self.page,
+			type: self.query.type,
+			location: self.query.location,
+			popularity: self.query.popularity
+		};
+
+		//return $resource(constants.url + 'survey');
+		return $http.get(constants.url + 'survey', {params: params})
+			.success(function (data) {
+				self.isLoading = false;
+				if(data.length == 0)
+					self.hasMore = false;
+				return self.results;
+			})
+			.error(function (data, status, headers, config) {
+				self.isLoading = false;
+				return data;
+			});
+	};
 });
 
 App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
@@ -276,7 +124,7 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 		this.setSurveyInfo(surveyInfo);
 	};
 
-	this.saveSurvey = function(survey){
+	this.saveSurvey = function (survey) {
 		_name = survey.name;
 		_description = survey.description;
 		_loopsAssign = survey.loopsAssign;
@@ -507,78 +355,7 @@ App.service('SurveyTakingService', function () {
 });
 
 App.service('SharedSurvey', function () {
-	var survey = {
-		questions: [
-			{
-				"questionType": "ranking",
-				"title": "How would you rate your overall satisfaction with us?",
-				"required": true,
-				"randomize": true,
-				"choices": [
-					{
-						"text": "1"
-					},
-					{
-						"text": "2"
-					},
-					{
-						"text": "3"
-					}
-				]
-			},
-			{
-				"questionType": "numberBox",
-				"title": "How many times have you fallen out of your bed?",
-				"required": true,
-				"minNumber": 0,
-				"maxNumber": 140
-			},
-			{
-				"questionType": "textBox",
-				"title": "How likely is it that you would recommend us to a friend/colleague?",
-				"required": true,
-				"minChars": 0,
-				"maxChars": 140
-			},
-			{
-				"questionType": "sliderScale",
-				"title": "Would you go again sky diving?",
-				"required": true,
-				"scale": {
-					"name": "Agreement",
-					"steps": [
-						"Strongly Disagree",
-						"Disagree",
-						"Neither Agree or Disagree",
-						"Agree",
-						"Strongly Agree"
-					]
-				}
-			},
-			{
-				"questionType": "multipleChoice",
-				"title": "What's your favorite pet?",
-				"required": true,
-				"multipleSelections": false,
-				"randomize": true,
-				"choices": [
-					{
-						"text": "1"
-					},
-					{
-						"text": "2"
-					},
-					{
-						"text": "3"
-					}
-				]
-			}
-		],
-		name: "Survey 1",
-		description: "Big description",
-		loopsAssign: [{name:"Public"}],
-		attributesAssign: []
-	};
+	var survey = null;
 
 	return {
 		getSurvey: function () {
@@ -586,6 +363,80 @@ App.service('SharedSurvey', function () {
 		},
 		setSurvey: function (value) {
 			survey = value;
+		},
+		resetSurvey: function (){
+			survey = {
+				questions: [
+					{
+						"questionType": "ranking",
+						"title": "How would you rate your overall satisfaction with us?",
+						"required": true,
+						"randomize": true,
+						"choices": [
+							{
+								"text": "1"
+							},
+							{
+								"text": "2"
+							},
+							{
+								"text": "3"
+							}
+						]
+					},
+					{
+						"questionType": "numberBox",
+						"title": "How many times have you fallen out of your bed?",
+						"required": true,
+						"minNumber": 0,
+						"maxNumber": 140
+					},
+					{
+						"questionType": "textBox",
+						"title": "How likely is it that you would recommend us to a friend/colleague?",
+						"required": true,
+						"minChars": 0,
+						"maxChars": 140
+					},
+					{
+						"questionType": "sliderScale",
+						"title": "Would you go again sky diving?",
+						"required": true,
+						"scale": {
+							"name": "Agreement",
+							"steps": [
+								"Strongly Disagree",
+								"Disagree",
+								"Neither Agree or Disagree",
+								"Agree",
+								"Strongly Agree"
+							]
+						}
+					},
+					{
+						"questionType": "multipleChoice",
+						"title": "What's your favorite pet?",
+						"required": true,
+						"multipleSelections": false,
+						"randomize": true,
+						"choices": [
+							{
+								"text": "1"
+							},
+							{
+								"text": "2"
+							},
+							{
+								"text": "3"
+							}
+						]
+					}
+				],
+				name: "Survey 1",
+				description: "Big description",
+				loopsAssign: [{name: "Public"}],
+				attributesAssign: []
+			};
 		}
 	};
 });

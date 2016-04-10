@@ -2,6 +2,7 @@ angular.module('App',
 	[
 		'ionic',
 		'ngCordova',
+		'ngResource',
 		'chart.js',
 		'loop.controllers',
 		'loop.services',
@@ -9,7 +10,7 @@ angular.module('App',
 		'loop.filters'
 	])
 
-	.run(function ($ionicPlatform, $rootScope) {
+	.run(function ($ionicPlatform, $rootScope, $state, AuthService) {
 		$ionicPlatform.ready(function () {
 			// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 			// for form inputs)
@@ -25,6 +26,15 @@ angular.module('App',
 
 			// Global variable for platform
 			$rootScope.platform = ionic.Platform.platform();
+		});
+
+		$rootScope.$on('$stateChangeStart', function (event, toState) {
+			if (toState.name === 'app.createSurvey') {
+				if (!AuthService.isAuthenticated()) { // Check if user allowed to transition
+					event.preventDefault(); // Prevent migration to default state
+					$state.go('login');
+				}
+			}
 		});
 	})
 	.config(function ($stateProvider, $urlRouterProvider) {
@@ -152,7 +162,7 @@ angular.module('App',
 		// if none of the above states are matched, use this as the fallback
 		$urlRouterProvider.otherwise('/app/home');
 	})
-	.config(function($ionicConfigProvider, ChartJsProvider){
+	.config(function ($ionicConfigProvider, ChartJsProvider) {
 		$ionicConfigProvider.navBar.alignTitle('center');
 		ChartJsProvider.setOptions({
 			colours: ['#FF5252', '#FF8A80'],

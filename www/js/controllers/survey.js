@@ -3,11 +3,12 @@ angular.module('loop.controllers.survey', [])
 		function ($scope, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, $state, $ionicModal, $ionicHistory, CreateSurveyService, Survey, SurveyTakingService, SharedSurvey) {
 			var surveyId = parseInt($stateParams.surveyId);
 			if (surveyId != -1) {
-				$scope.questions = Survey.createdSurveys[surveyId].questions;
+				$scope.questions = SharedSurvey.getSurvey().questions;
 			}
 			else {
 				$scope.questions = SharedSurvey.getSurvey().questions;
 			}
+			console.log(SharedSurvey.getSurvey());
 
 			$scope.currentIndex = 0;
 			$scope.numOfQuestions = $scope.questions.length;

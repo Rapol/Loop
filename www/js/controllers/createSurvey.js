@@ -110,8 +110,8 @@ angular.module('loop.controllers.createSurvey', [])
 			}, 100);
 		}])
 
-	.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', '$ionicLoading', '$timeout', '$ionicPopup', 'CreateSurveyService', 'Survey',
-		function ($scope, $state, $ionicActionSheet, $ionicPlatform, $ionicLoading, $timeout, $ionicPopup, CreateSurveyService, Survey) {
+	.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', '$ionicLoading', '$timeout', '$ionicPopup', '$http', 'CreateSurveyService', 'Session', 'constants',
+		function ($scope, $state, $ionicActionSheet, $ionicPlatform, $ionicLoading, $timeout, $ionicPopup, $http, CreateSurveyService, Session, constants) {
 
 			$scope.survey = CreateSurveyService.getSurvey();
 
@@ -127,12 +127,14 @@ angular.module('loop.controllers.createSurvey', [])
 				$ionicLoading.show({
 					template: '<ion-spinner icon="crescent"></ion-spinner>Creating survey...'
 				});
-
-				Survey.createdSurveys.push(CreateSurveyService.getSurvey());
-
-				CreateSurveyService.resetSurvey();
-
-				$timeout(function () {
+				var survey = CreateSurveyService.getSurvey();
+				survey.user = Session.firstName + " " + Session.lastName;
+				survey.loopName = survey.loopsAssign[0].name;
+				survey.questionCount = 0;
+				survey.answeredCount = 0;
+				survey.img = "img/blueOnWhiteLogo.png",
+				$http.post(constants.url + 'survey', survey)
+					.success(function (data) {
 						$ionicLoading.hide();
 						$ionicPopup.show({
 							template: '<div class="survey-created"><i class="icon ion-checkmark-circled"></i></div>',
@@ -154,8 +156,11 @@ angular.module('loop.controllers.createSurvey', [])
 								}
 							]
 						});
-					},
-					2000);
+						CreateSurveyService.resetSurvey();
+				})
+					.error(function (data, status, headers, config) {
+
+					});
 			};
 
 			function clickActionButtonConfig(index) {

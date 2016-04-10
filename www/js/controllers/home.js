@@ -1,6 +1,6 @@
 var App = angular.module('loop.controllers.home', []);
 
-App.controller('sidebarController', ['$scope', '$state', '$ionicSideMenuDelegate', '$ionicViewSwitcher', '$ionicPlatform', '$cordovaBarcodeScanner', 'Session', function($scope, $state, $ionicSideMenuDelegate, $ionicViewSwitcher, $ionicPlatform, $cordovaBarcodeScanner, Session){
+App.controller('sidebarController', ['$scope', '$state', '$ionicSideMenuDelegate', '$ionicViewSwitcher', '$ionicPlatform', '$cordovaBarcodeScanner', 'Session', function ($scope, $state, $ionicSideMenuDelegate, $ionicViewSwitcher, $ionicPlatform, $cordovaBarcodeScanner, Session) {
 	$scope.user = {};
 
 	$scope.searchResults = [
@@ -69,87 +69,165 @@ App.controller('sidebarController', ['$scope', '$state', '$ionicSideMenuDelegate
 	}
 }]);
 
-App.controller('homeController', ['$scope', 'Survey', function ($scope, Survey) {
+App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', 'SharedSurvey', function ($scope, $ionicPopup, $state, Survey, SharedSurvey) {
+	$scope.surveys = [];
+	$scope.hasMore = true;
 
-	$scope.createdSurveys = Survey.createdSurveys;
+	// Init survey data
+	initSurveys();
 
-	$scope.surveys = Survey.market.concat(Survey.friends);
-
-	$scope.type = Survey.type;
-	$scope.typeIndex = 0;
-
-	$scope.location = Survey.location;
-	$scope.locationIndex = 0;
-
-	$scope.popularity = Survey.popularity;
-	$scope.popularityIndex = 0;
-
-	$scope.locationButton = function () {
-		if ($scope.locationIndex == 0) {
-			$scope.locationIndex++;
-			$scope.surveys = Survey.local;
-			$scope.createdSurveys = Survey.createdSurveys;
-			console.log("Change Global to Local");
-		}
-		else if ($scope.locationIndex == 1) {
-			$scope.locationIndex = 0;
-			$scope.surveys = Survey.global;
-			$scope.createdSurveys = [];
-			console.log("Change Local to Global");
+	$scope.doRefresh = function () {
+		if (!Survey.isLoading) {
+			Survey.refresh().then(function (res) {
+				$scope.surveys = res.data;
+				$scope.hasMore = Survey.hasMore;
+				$scope.$broadcast('scroll.refreshComplete');
+			}).catch(errorAlert);
 		}
 	};
 
-	$scope.popularityButton = function () {
-		if ($scope.popularityIndex == 0) {
-			$scope.popularityIndex++;
-			$scope.surveys = Survey.newest;
-			$scope.createdSurveys = Survey.createdSurveys;
-			console.log("Change Hot to Newest");
-		}
-		else if ($scope.popularityIndex == 1) {
-			$scope.popularityIndex = 0;
-			$scope.surveys = Survey.hot;
-			$scope.createdSurveys = [];
-			console.log("Change Newest to Hot");
-		}
+	$scope.onInfinite = function () {
+		$scope.hasMore = Survey.hasMore;
+		Survey.next().then(function (res) {
+			// Merge arrays
+			Array.prototype.push.apply($scope.surveys, res.data);
+			$scope.hasMore = Survey.hasMore;
+			$scope.$broadcast('scroll.infiniteScrollComplete');
+		}).catch(errorAlert);
+
 	};
 
-	$scope.typeButton = function () {
-		if ($scope.typeIndex == 0) {
-			$scope.typeIndex++;
-			$scope.surveys = Survey.friends;
-			$scope.createdSurveys = [];
-			console.log("Change All to Friends");
-		}
-		else if ($scope.typeIndex == 1) {
-			$scope.typeIndex++;
-			$scope.surveys = Survey.market;
-			$scope.createdSurveys = Survey.createdSurveys;
-			console.log("Change Friends to Market");
-		}
-		else {
-			$scope.typeIndex = 0;
-			$scope.surveys = shuffle(Survey.market.concat(Survey.friends));
-			console.log("Change Friends to Market");
+	function initSurveys(query){
+		if(query){
+			Survey.resetQuery(query).then(function (res) {
+				$scope.surveys = res.data;
+			}).catch(errorAlert);
+		}else{
+			Survey.load().then(function (res) {
+				$scope.surveys = res.data;
+			}).catch(errorAlert);
 		}
 	}
 
-	function shuffle(array) {
-		var currentIndex = array.length, temporaryValue, randomIndex;
-
-		// While there remain elements to shuffle...
-		while (0 !== currentIndex) {
-
-			// Pick a remaining element...
-			randomIndex = Math.floor(Math.random() * currentIndex);
-			currentIndex -= 1;
-
-			// And swap it with the current element.
-			temporaryValue = array[currentIndex];
-			array[currentIndex] = array[randomIndex];
-			array[randomIndex] = temporaryValue;
+	$scope.goToSurvey = function (index){
+		console.log($scope.surveys[index])
+		if($scope.surveys[index].questions){
+			SharedSurvey.setSurvey($scope.surveys[index]);
+			$state.go("surveyFlow", {surveyId: -1})
 		}
+		else {
+			SharedSurvey.resetSurvey();
+			$state.go("surveyFlow", {surveyId: 0})
+		}
+	};
 
-		return array;
+
+	$scope.type = [
+		{
+			name: 'All',
+			icon: 'ion-android-funnel'
+		},
+		{
+			name: 'Friends',
+			icon: 'ion-android-people'
+		},
+		{
+			name: 'Market',
+			icon: 'ion-stats-bars'
+		}
+	];
+	$scope.typeIndex = 0;
+
+	$scope.location = [
+		{
+			name: 'Global',
+			icon: 'ion-earth'
+		},
+		{
+			name: 'Local',
+			icon: 'ion-location'
+		}
+	];
+	$scope.locationIndex = 0;
+
+	$scope.popularity = [
+		{
+			name: 'Hot',
+			icon: 'ion-fireball'
+		},
+		{
+			name: 'New',
+			icon: 'ion-arrow-up-c'
+		}
+	];
+	$scope.popularityIndex = 0;
+
+	$scope.locationButton = function () {
+		switch ($scope.locationIndex){
+			case 0: {
+				$scope.locationIndex++;
+				console.log("Change Global to Local");
+				break;
+			}
+			case 1: {
+				$scope.locationIndex = 0;
+				console.log("Change Local to Global");
+				break;
+			}
+		}
+		initSurveys(getQuery());
+	};
+
+	$scope.popularityButton = function () {
+		switch ($scope.popularityIndex){
+			case 0: {
+				$scope.popularityIndex++;
+				console.log("Change Hot to Newest");
+				break;
+			}
+			case 1: {
+				$scope.popularityIndex = 0;
+				console.log("Change Newest to Hot");
+				break;
+			}
+		}
+		initSurveys(getQuery());
+	};
+
+	$scope.typeButton = function () {
+		switch ($scope.typeIndex){
+			case 0: {
+				$scope.typeIndex++;
+				console.log("Change All to Friends");
+				break;
+			}
+			case 1: {
+				$scope.typeIndex = 0;
+				console.log("Change Friends to Market");
+				break;
+			}
+			case 2: {
+				$scope.typeIndex = 0;
+				console.log("Change Friends to Market");
+				break;
+			}
+		}
+		initSurveys(getQuery());
+	};
+
+	function getQuery(){
+		return {
+			type: $scope.type[$scope.typeIndex].name,
+			popularity: $scope.popularity[$scope.popularityIndex].name,
+			location: $scope.location[$scope.locationIndex].name
+		}
+	}
+
+	function errorAlert(){
+		$scope.hasMore = false;
+		$ionicPopup.alert({
+			title: 'Error',
+			template: 'Please try again later'
+		});
 	}
 }]);
