@@ -1,30 +1,26 @@
 angular.module('loop.controllers.login', [])
-	.controller('loginController', ['$scope', '$http', '$state', '$ionicViewSwitcher', '$ionicPopup', 'AuthService', function ($scope, $http, $state, $ionicViewSwitcher, $ionicPopup, AuthService) {
+	.controller('loginController', ['$scope', '$state', '$ionicViewSwitcher', 'PopupService', 'AuthService', function ($scope, $state, $ionicViewSwitcher, PopupService, AuthService) {
 		$scope.user = {};
 		var message = '';
 
 		$scope.login = function (userForm) {
 			if (!userForm.$valid)
 				return;
-			AuthService.login($scope.user).then(function (res) {
+			AuthService.login($scope.user)
+				.then(function (res) {
 					$ionicViewSwitcher.nextDirection('forward');
 					$state.go('app.home');
 				}
 			).catch(function (err) {
-					console.log(err);
 					if (err.status == 401)
-						message = 'Username or password is incorrect.';
+						message = 'Username or password is incorrect';
 					else
-						message = 'Unexpected error please try again.';
-
-					$ionicPopup.alert({
-						title: 'Login error',
-						template: message
-					});
+						message = 'Unexpected error, please try again';
+					PopupService.alertCustom('Login Error', message);
 				});
 		}
 	}])
-	.controller('signupController', ['$scope', '$http', '$state', '$ionicViewSwitcher', '$ionicPopup', 'AuthService', function ($scope, $http, $state, $ionicViewSwitcher, $ionicPopup, AuthService) {
+	.controller('signupController', ['$scope', '$state', '$ionicViewSwitcher', '$ionicLoading', 'PopupService', 'AuthService', function ($scope, $state, $ionicViewSwitcher, $ionicLoading, PopupService, AuthService) {
 
 		$scope.user = {};
 		var message = '';
@@ -37,23 +33,19 @@ angular.module('loop.controllers.login', [])
 				return;
 			if (!$scope.passwordMatch)
 				return;
-
-			AuthService.signUp($scope.user).then(function (res) {
+			AuthService.signUp($scope.user)
+				.then(function (res) {
 					$ionicViewSwitcher.nextDirection('forward');
 					$state.go('app.home');
 				}
 			).catch(function (err) {
-					console.log(err);
 					if (err.status == 400)
-						message = 'Bad request please try again.';
+						message = 'Bad request please try again';
 					else if (err.status == 409)
-						message = 'Account already exists with the same email.';
+						message = 'Account already exists with the same email';
 					else
-						message = 'Unexpected error please try again.';
-					$ionicPopup.alert({
-						title: 'Signup error',
-						template: message
-					});
+						message = 'Unexpected Error, Please Try Again';
+					PopupService.alertCustom('Sign Up Error', message);
 				});
 		};
 	}]);

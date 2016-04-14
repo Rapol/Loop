@@ -47,8 +47,8 @@ App.controller('sidebarController', ['$scope', '$state', '$ionicSideMenuDelegate
 	];
 
 	$scope.$on('$ionicView.enter', function () {
-		$scope.user.firstName = Session.firstName;
-		$scope.user.lastName = Session.lastName;
+		$scope.user.firstName = Session.getFirstName();
+		$scope.user.lastName = Session.getFirstName();
 	});
 
 	$scope.signOut = function () {
@@ -69,7 +69,7 @@ App.controller('sidebarController', ['$scope', '$state', '$ionicSideMenuDelegate
 	}
 }]);
 
-App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', 'SharedSurvey', function ($scope, $ionicPopup, $state, Survey, SharedSurvey) {
+App.controller('homeController', ['$scope', '$state', 'PopupService', 'Survey', 'SharedSurvey', function ($scope, $state, PopupService, Survey, SharedSurvey) {
 	$scope.surveys = [];
 	$scope.hasMore = true;
 
@@ -97,21 +97,15 @@ App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', '
 
 	};
 
-	function initSurveys(query){
-		if(query){
-			Survey.resetQuery(query).then(function (res) {
-				$scope.surveys = res.data;
-			}).catch(errorAlert);
-		}else{
-			Survey.load().then(function (res) {
-				$scope.surveys = res.data;
-			}).catch(errorAlert);
-		}
+	function initSurveys(query) {
+		$scope.hasMore = true;
+		Survey.load(query).then(function (res) {
+			$scope.surveys = res.data;
+		}).catch(errorAlert);
 	}
 
-	$scope.goToSurvey = function (index){
-		console.log($scope.surveys[index])
-		if($scope.surveys[index].questions){
+	$scope.goToSurvey = function (index) {
+		if ($scope.surveys[index].questions) {
 			SharedSurvey.setSurvey($scope.surveys[index]);
 			$state.go("surveyFlow", {surveyId: -1})
 		}
@@ -163,13 +157,15 @@ App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', '
 	$scope.popularityIndex = 0;
 
 	$scope.locationButton = function () {
-		switch ($scope.locationIndex){
-			case 0: {
+		switch ($scope.locationIndex) {
+			case 0:
+			{
 				$scope.locationIndex++;
 				console.log("Change Global to Local");
 				break;
 			}
-			case 1: {
+			case 1:
+			{
 				$scope.locationIndex = 0;
 				console.log("Change Local to Global");
 				break;
@@ -179,13 +175,15 @@ App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', '
 	};
 
 	$scope.popularityButton = function () {
-		switch ($scope.popularityIndex){
-			case 0: {
+		switch ($scope.popularityIndex) {
+			case 0:
+			{
 				$scope.popularityIndex++;
 				console.log("Change Hot to Newest");
 				break;
 			}
-			case 1: {
+			case 1:
+			{
 				$scope.popularityIndex = 0;
 				console.log("Change Newest to Hot");
 				break;
@@ -195,18 +193,21 @@ App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', '
 	};
 
 	$scope.typeButton = function () {
-		switch ($scope.typeIndex){
-			case 0: {
+		switch ($scope.typeIndex) {
+			case 0:
+			{
 				$scope.typeIndex++;
 				console.log("Change All to Friends");
 				break;
 			}
-			case 1: {
+			case 1:
+			{
 				$scope.typeIndex = 0;
 				console.log("Change Friends to Market");
 				break;
 			}
-			case 2: {
+			case 2:
+			{
 				$scope.typeIndex = 0;
 				console.log("Change Friends to Market");
 				break;
@@ -215,7 +216,7 @@ App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', '
 		initSurveys(getQuery());
 	};
 
-	function getQuery(){
+	function getQuery() {
 		return {
 			type: $scope.type[$scope.typeIndex].name,
 			popularity: $scope.popularity[$scope.popularityIndex].name,
@@ -223,11 +224,9 @@ App.controller('homeController', ['$scope', '$ionicPopup', '$state', 'Survey', '
 		}
 	}
 
-	function errorAlert(){
+	function errorAlert(err) {
 		$scope.hasMore = false;
-		$ionicPopup.alert({
-			title: 'Error',
-			template: 'Please try again later'
-		});
+		if (err.status != 401)
+			PopupService.alert("genericError");
 	}
 }]);

@@ -1,31 +1,25 @@
 //Controllers for create survey section
 angular.module('loop.controllers.createSurvey', [])
 
-	.controller('createSurveyController', ['$scope', '$ionicPopup', '$state', '$ionicActionSheet', 'CreateSurveyService',
-		function ($scope, $ionicPopup, $state, $ionicActionSheet, CreateSurveyService) {
+	.controller('createSurveyController', ['$scope', 'PopupService', '$state', '$ionicActionSheet', 'CreateSurveyService', 'loops', 'attributes',
+		function ($scope, PopupService, $state, $ionicActionSheet, CreateSurveyService, loops, attributes) {
 
 			CreateSurveyService.resetSurvey();
 
 			$scope.surveyInfo = {
 				name: "",
 				description: "",
-				loopsAssign: [],
-				attributesAssign: []
+				loops: [],
+				attributes: []
 			};
 
-			$scope.surveyInfo.loopsAssign = getLoops();
-
-			// Default Public to checked
-			$scope.surveyInfo.loopsAssign[0].checked = true;
-
-			$scope.surveyInfo.attributesAssign = getAttributes();
+			$scope.surveyInfo.loops = loops;
+			$scope.surveyInfo.loops.unshift({name: "Public", loopId: 1, checked: true});
+			$scope.surveyInfo.attributes = attributes;
 
 			$scope.startSurvey = function () {
 				if ($scope.surveyInfo.name == "") {
-					$ionicPopup.alert({
-						title: 'Alert',
-						template: 'Please fill out the survey name.'
-					});
+					PopupService.alertCustom('Field Invalid', "Please fill out the survey name");
 					return;
 				}
 				showActionSheet($ionicActionSheet, clickActionButtonConfig);
@@ -40,8 +34,8 @@ angular.module('loop.controllers.createSurvey', [])
 			}
 		}])
 
-	.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionSheet', '$timeout', '$ionicPopup', '$ionicPlatform', 'CreateSurveyService', 'QuestionFactory',
-		function ($scope, $state, $ionicActionSheet, $timeout, $ionicPopup, $ionicPlatform, CreateSurveyService, QuestionFactory) {
+	.controller('createSurveyFlowController', ['$scope', '$state', '$ionicActionSheet', '$timeout', 'PopupService', '$ionicPlatform', 'CreateSurveyService', 'QuestionFactory',
+		function ($scope, $state, $ionicActionSheet, $timeout, PopupService, $ionicPlatform, CreateSurveyService, QuestionFactory) {
 
 			// Create a new question
 			$scope.question = new QuestionFactory.Question(CreateSurveyService.newQuestionType);
@@ -84,10 +78,7 @@ angular.module('loop.controllers.createSurvey', [])
 			function testQuestion() {
 				var result = $scope.question.validateQuestion();
 				if (result)
-					$ionicPopup.alert({
-						title: 'Question Invalid',
-						template: result
-					});
+					PopupService.alertCustom('Question Invalid', result);
 				return result;
 			}
 
@@ -110,8 +101,8 @@ angular.module('loop.controllers.createSurvey', [])
 			}, 100);
 		}])
 
-	.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', '$ionicLoading', '$timeout', '$ionicPopup', '$http', 'CreateSurveyService', 'Session', 'constants',
-		function ($scope, $state, $ionicActionSheet, $ionicPlatform, $ionicLoading, $timeout, $ionicPopup, $http, CreateSurveyService, Session, constants) {
+	.controller('reviewSurveyController', ['$scope', '$state', '$ionicActionSheet', '$ionicPlatform', '$timeout', 'PopupService', 'CreateSurveyService', 'Session', 'RequestService',
+		function ($scope, $state, $ionicActionSheet, $ionicPlatform, $timeout, PopupService, CreateSurveyService, Session, RequestService) {
 
 			$scope.survey = CreateSurveyService.getSurvey();
 
@@ -124,42 +115,13 @@ angular.module('loop.controllers.createSurvey', [])
 			};
 
 			$scope.createSurvey = function () {
-				$ionicLoading.show({
-					template: '<ion-spinner icon="crescent"></ion-spinner>Creating survey...'
-				});
-				var survey = CreateSurveyService.getSurvey();
-				survey.user = Session.firstName + " " + Session.lastName;
-				survey.loopName = survey.loopsAssign[0].name;
-				survey.questionCount = 0;
-				survey.answeredCount = 0;
-				survey.img = "img/blueOnWhiteLogo.png",
-				$http.post(constants.url + 'survey', survey)
-					.success(function (data) {
-						$ionicLoading.hide();
-						$ionicPopup.show({
-							template: '<div class="survey-created"><i class="icon ion-checkmark-circled"></i></div>',
-							title: 'Survey Created',
-							buttons: [
-								{
-									text: 'Share',
-									type: 'button-energized',
-									onTap: function (e) {
-										e.preventDefault()
-									}
-								},
-								{
-									text: 'My Surveys',
-									type: 'button-calm',
-									onTap: function (e) {
-										$state.go('app.mySurveys');
-									}
-								}
-							]
-						});
+				RequestService.post('survey', CreateSurveyService.getSurvey(), true)
+					.then(function (res) {
+						PopupService.show("surveyCreated");
 						CreateSurveyService.resetSurvey();
-				})
-					.error(function (data, status, headers, config) {
-
+					})
+					.catch(function (res, status, headers, config) {
+						PopupService.alert("genericError");
 					});
 			};
 
@@ -179,8 +141,8 @@ angular.module('loop.controllers.createSurvey', [])
 			$scope.surveyInfo = {};
 			angular.copy(CreateSurveyService.getSurveyInfo(), $scope.surveyInfo);
 
-			$scope.surveyInfo.loopsAssign = mergeLoops();
-			$scope.surveyInfo.attributesAssign = mergeAttributes();
+			$scope.surveyInfo.loops = mergeLoops();
+			$scope.surveyInfo.attributes = mergeAttributes();
 
 
 			$scope.saveSurveyInfo = function () {
@@ -192,7 +154,7 @@ angular.module('loop.controllers.createSurvey', [])
 				var loops = getLoops();
 				angular.forEach(loops, function (item, key) {
 
-						angular.forEach($scope.surveyInfo.loopsAssign, function (checkedItem, key) {
+						angular.forEach($scope.surveyInfo.loops, function (checkedItem, key) {
 							if (checkedItem.name == item.name)
 								item.checked = true;
 						});
@@ -206,7 +168,7 @@ angular.module('loop.controllers.createSurvey', [])
 				var attributes = getAttributes();
 				angular.forEach(attributes, function (item, key) {
 
-						angular.forEach($scope.surveyInfo.attributesAssign, function (checkedItem, key) {
+						angular.forEach($scope.surveyInfo.attributes, function (checkedItem, key) {
 							if (checkedItem.name == item.name) {
 								item.checked = true;
 								item.required = checkedItem.required;
@@ -219,8 +181,8 @@ angular.module('loop.controllers.createSurvey', [])
 			}
 		}])
 
-	.controller('addQuestionController', ['$scope', '$ionicHistory', '$ionicPopup', 'CreateSurveyService', 'QuestionFactory',
-		function ($scope, $ionicHistory, $ionicPopup, CreateSurveyService, QuestionFactory) {
+	.controller('addQuestionController', ['$scope', '$ionicHistory', 'PopupService', 'CreateSurveyService', 'QuestionFactory',
+		function ($scope, $ionicHistory, PopupService, CreateSurveyService, QuestionFactory) {
 			$scope.question = new QuestionFactory.Question(CreateSurveyService.newQuestionType);
 
 			$scope.questionNumber = CreateSurveyService.getQuestionsLength();
@@ -228,10 +190,7 @@ angular.module('loop.controllers.createSurvey', [])
 			$scope.addQuestion = function () {
 				var result = $scope.question.validateQuestion();
 				if (result)
-					$ionicPopup.alert({
-						title: 'Question Invalid',
-						template: result
-					});
+					PopupService.alertCustom('Question Invalid', result);
 				else {
 					CreateSurveyService.addQuestion($scope.question);
 					$ionicHistory.goBack();
@@ -239,8 +198,8 @@ angular.module('loop.controllers.createSurvey', [])
 			};
 		}])
 
-	.controller('editQuestionController', ['$scope', '$ionicHistory', '$ionicPopup', '$stateParams', 'CreateSurveyService', 'QuestionFactory',
-		function ($scope, $ionicHistory, $ionicPopup, $stateParams, CreateSurveyService) {
+	.controller('editQuestionController', ['$scope', '$ionicHistory', 'PopupService', '$stateParams', 'CreateSurveyService', 'QuestionFactory',
+		function ($scope, $ionicHistory, PopupService, $stateParams, CreateSurveyService) {
 
 			$scope.questionNumber = parseInt($stateParams.questionNumber);
 
@@ -251,10 +210,7 @@ angular.module('loop.controllers.createSurvey', [])
 			$scope.saveQuestion = function () {
 				var result = $scope.question.validateQuestion();
 				if (result)
-					$ionicPopup.alert({
-						title: 'Question Invalid',
-						template: result
-					});
+					PopupService.alertCustom('Question Invalid', result);
 				else {
 					CreateSurveyService.editQuestion($scope.question, $scope.questionNumber);
 					$ionicHistory.goBack();

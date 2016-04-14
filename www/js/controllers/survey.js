@@ -1,6 +1,6 @@
 angular.module('loop.controllers.survey', [])
-	.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', '$ionicLoading', '$timeout', '$state', '$ionicModal', '$ionicHistory', 'CreateSurveyService', 'Survey', 'SurveyTakingService', 'SharedSurvey',
-		function ($scope, $stateParams, $ionicHistory, $ionicPopup, $ionicLoading, $timeout, $state, $ionicModal, $ionicHistory, CreateSurveyService, Survey, SurveyTakingService, SharedSurvey) {
+	.controller('surveyFlowController', ['$scope', '$stateParams', '$ionicHistory', 'PopupService', '$ionicLoading', '$timeout', '$state', '$ionicModal', '$ionicHistory', 'CreateSurveyService', 'Survey', 'SurveyTakingService', 'SharedSurvey',
+		function ($scope, $stateParams, $ionicHistory, PopupService, $ionicLoading, $timeout, $state, $ionicModal, $ionicHistory, CreateSurveyService, Survey, SurveyTakingService, SharedSurvey) {
 			var surveyId = parseInt($stateParams.surveyId);
 			if (surveyId != -1) {
 				$scope.questions = SharedSurvey.getSurvey().questions;
@@ -18,10 +18,7 @@ angular.module('loop.controllers.survey', [])
 			$scope.goRight = function () {
 				var result = SurveyTakingService.validateAnswer($scope.question);
 				if (result) {
-					$ionicPopup.alert({
-						title: 'Answer Invalid',
-						template: result
-					});
+					PopupService.alertCustom('Answer Invalid', result);
 				}
 				else {
 					$scope.question = $scope.questions[++$scope.currentIndex];
@@ -37,10 +34,7 @@ angular.module('loop.controllers.survey', [])
 			$scope.submitSurvey = function () {
 				var result = SurveyTakingService.validateAnswer($scope.question);
 				if (result) {
-					$ionicPopup.alert({
-						title: 'Answer Invalid',
-						template: result
-					});
+					PopupService.alertCustom('Answer Invalid', result);
 				}
 				else {
 					$ionicLoading.show({
@@ -48,26 +42,7 @@ angular.module('loop.controllers.survey', [])
 					});
 					$timeout(function () {
 							$ionicLoading.hide();
-							$ionicPopup.show({
-								template: '<div class="survey-created"><h3>Thank you!</h3></div>',
-								title: 'Survey Submitted',
-								buttons: [
-									{
-										text: 'Share',
-										type: 'button-energized',
-										onTap: function (e) {
-											e.preventDefault()
-										}
-									},
-									{
-										text: 'Home',
-										type: 'button-calm',
-										onTap: function (e) {
-											$state.go('app.home');
-										}
-									}
-								]
-							});
+							PopupService.alert('surveySubmitted');
 						},
 						2000);
 				}
@@ -91,8 +66,8 @@ angular.module('loop.controllers.survey', [])
 				$ionicHistory.goBack();
 			};
 		}])
-	.controller('surveyStatsController', ['$scope', '$stateParams', '$ionicHistory', '$ionicPopup', 'CreateSurveyService', 'Survey',
-		function ($scope, $stateParams, $ionicHistory, $ionicPopup, CreateSurveyService, Survey) {
+	.controller('surveyStatsController', ['$scope', '$stateParams', '$ionicHistory', 'CreateSurveyService', 'Survey',
+		function ($scope, $stateParams, $ionicHistory, CreateSurveyService, Survey) {
 			$scope.options = {
 				barStrokeWidth: 1,
 				scaleShowVerticalLines: false,

@@ -24,9 +24,13 @@ App.controller('myLoopsController', ['$scope', 'Loop', function ($scope, Loop) {
 
 App.controller('loopProfileController', ['$scope', 'Survey', 'Friend', function ($scope, Survey, Friend) {
 
+	Survey.load().then(function (res) {
+		$scope.tabs[0].content = res.data;
+	});
+
 	$scope.tabs = [{
 		title: "Surveys",
-		content: Survey.market
+		content: []
 	}, {
 		title: "Members",
 		content: Friend.getTopFriends()

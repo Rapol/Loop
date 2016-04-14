@@ -1,6 +1,6 @@
 var App = angular.module('loop.services.survey', []);
 
-App.service('Survey', function ($http, $resource, constants) {
+App.service('Survey', function (RequestService) {
 
 	var self = this;
 
@@ -25,13 +25,11 @@ App.service('Survey', function ($http, $resource, constants) {
 		return self.load();
 	};
 
-	self.resetQuery = function(query){
-		self.query = query;
-		self.page = 0;
-		return self.load();
-	};
-
-	self.load = function () {
+	self.load = function (query) {
+		if(query){
+			self.query = query;
+			self.page = 0;
+		}
 		self.isLoading = true;
 		var params = {
 			page: self.page,
@@ -40,8 +38,7 @@ App.service('Survey', function ($http, $resource, constants) {
 			popularity: self.query.popularity
 		};
 
-		//return $resource(constants.url + 'survey');
-		return $http.get(constants.url + 'survey', {params: params})
+		return RequestService.get('survey', params)
 			.success(function (data) {
 				self.isLoading = false;
 				if(data.length == 0)
@@ -59,8 +56,8 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 	var _questions = [];
 	var _name = "";
 	var _description = "";
-	var _loopsAssign = [];
-	var _attributesAssign = [];
+	var _loops = [];
+	var _attributes = [];
 
 	this.newQuestionType = "";
 
@@ -68,24 +65,24 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 		return {
 			name: _name,
 			description: _description,
-			loopsAssign: _loopsAssign,
-			attributesAssign: _attributesAssign
+			loops: _loops,
+			attributes: _attributes
 		}
 	};
 
 	this.setSurveyInfo = function (surveyInfo) {
 		_name = surveyInfo.name;
 		_description = surveyInfo.description;
-		_loopsAssign = surveyInfo.loopsAssign;
-		_attributesAssign = surveyInfo.attributesAssign;
+		_loops = surveyInfo.loops;
+		_attributes = surveyInfo.attributes;
 	};
 
 	this.getSurvey = function () {
 		return {
 			name: _name,
 			description: _description,
-			loopsAssign: _loopsAssign,
-			attributesAssign: _attributesAssign,
+			loops: _loops,
+			attributes: _attributes,
 			questions: _questions
 		}
 	};
@@ -119,16 +116,16 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 	this.countCheckedChoices = countCheckedChoices;
 
 	this.saveSurveyInfo = function (surveyInfo) {
-		surveyInfo.loopsAssign = getCheckedItems(surveyInfo.loopsAssign);
-		surveyInfo.attributesAssign = getCheckedItems(surveyInfo.attributesAssign);
+		surveyInfo.loops = getCheckedItems(surveyInfo.loops);
+		surveyInfo.attributes = getCheckedItems(surveyInfo.attributes);
 		this.setSurveyInfo(surveyInfo);
 	};
 
 	this.saveSurvey = function (survey) {
 		_name = survey.name;
 		_description = survey.description;
-		_loopsAssign = survey.loopsAssign;
-		_attributesAssign = survey.attributesAssign;
+		_loops = survey.loops;
+		_attributes = survey.attributes;
 		_questions = survey.questions;
 	};
 
@@ -164,8 +161,8 @@ App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
 		_questions = [];
 		_name = "";
 		_description = "";
-		_loopsAssign = [];
-		_attributesAssign = [];
+		_loops = [];
+		_attributes = [];
 
 		this.newQuestionType = "";
 	}
@@ -357,6 +354,83 @@ App.service('SurveyTakingService', function () {
 App.service('SharedSurvey', function () {
 	var survey = null;
 
+	resetSurvey();
+
+	function resetSurvey(){
+		survey = {
+			questions: [
+				{
+					"questionType": "ranking",
+					"title": "How would you rate your overall satisfaction with us?",
+					"required": true,
+					"randomize": true,
+					"choices": [
+						{
+							"text": "1"
+						},
+						{
+							"text": "2"
+						},
+						{
+							"text": "3"
+						}
+					]
+				},
+				{
+					"questionType": "numberBox",
+					"title": "How many times have you fallen out of your bed?",
+					"required": true,
+					"minNumber": 0,
+					"maxNumber": 140
+				},
+				{
+					"questionType": "textBox",
+					"title": "How likely is it that you would recommend us to a friend/colleague?",
+					"required": true,
+					"minChars": 0,
+					"maxChars": 140
+				},
+				{
+					"questionType": "sliderScale",
+					"title": "Would you go again sky diving?",
+					"required": true,
+					"scale": {
+						"name": "Agreement",
+						"steps": [
+							"Strongly Disagree",
+							"Disagree",
+							"Neither Agree or Disagree",
+							"Agree",
+							"Strongly Agree"
+						]
+					}
+				},
+				{
+					"questionType": "multipleChoice",
+					"title": "What's your favorite pet?",
+					"required": true,
+					"multipleSelections": false,
+					"randomize": true,
+					"choices": [
+						{
+							"text": "1"
+						},
+						{
+							"text": "2"
+						},
+						{
+							"text": "3"
+						}
+					]
+				}
+			],
+			name: "Survey 1",
+			description: "Big description",
+			loops: [{name: "Public"}],
+			attributes: []
+		};
+	}
+
 	return {
 		getSurvey: function () {
 			return survey;
@@ -364,80 +438,7 @@ App.service('SharedSurvey', function () {
 		setSurvey: function (value) {
 			survey = value;
 		},
-		resetSurvey: function (){
-			survey = {
-				questions: [
-					{
-						"questionType": "ranking",
-						"title": "How would you rate your overall satisfaction with us?",
-						"required": true,
-						"randomize": true,
-						"choices": [
-							{
-								"text": "1"
-							},
-							{
-								"text": "2"
-							},
-							{
-								"text": "3"
-							}
-						]
-					},
-					{
-						"questionType": "numberBox",
-						"title": "How many times have you fallen out of your bed?",
-						"required": true,
-						"minNumber": 0,
-						"maxNumber": 140
-					},
-					{
-						"questionType": "textBox",
-						"title": "How likely is it that you would recommend us to a friend/colleague?",
-						"required": true,
-						"minChars": 0,
-						"maxChars": 140
-					},
-					{
-						"questionType": "sliderScale",
-						"title": "Would you go again sky diving?",
-						"required": true,
-						"scale": {
-							"name": "Agreement",
-							"steps": [
-								"Strongly Disagree",
-								"Disagree",
-								"Neither Agree or Disagree",
-								"Agree",
-								"Strongly Agree"
-							]
-						}
-					},
-					{
-						"questionType": "multipleChoice",
-						"title": "What's your favorite pet?",
-						"required": true,
-						"multipleSelections": false,
-						"randomize": true,
-						"choices": [
-							{
-								"text": "1"
-							},
-							{
-								"text": "2"
-							},
-							{
-								"text": "3"
-							}
-						]
-					}
-				],
-				name: "Survey 1",
-				description: "Big description",
-				loopsAssign: [{name: "Public"}],
-				attributesAssign: []
-			};
-		}
+		resetSurvey: resetSurvey
 	};
 });
 

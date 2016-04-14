@@ -171,28 +171,28 @@ angular.module('loop.directives.survey', [])
 			scope: {
 				surveyInfo: "="
 			},
-			controller: function ($scope, $ionicModal, $ionicPopup, CreateSurveyService) {
-				$scope.loopsAssignCopy = [];
+			controller: function ($scope, $ionicModal, PopupService, CreateSurveyService) {
+				$scope.loopsCopy = [];
 
-				$scope.attributesAssignCopy = [];
+				$scope.attributesCopy = [];
 
 				$scope.saveAttributeAssign = function () {
-					angular.copy($scope.attributesAssignCopy, $scope.surveyInfo.attributesAssign);
+					angular.copy($scope.attributesCopy, $scope.surveyInfo.attributes);
 					$scope.closeAttributesModal();
 				}
 
 				$scope.uncheckedAttribute = function (index) {
-					$scope.surveyInfo.attributesAssign[index].checked = false;
+					$scope.surveyInfo.attributes[index].checked = false;
 				};
 
 				$scope.uncheckedLoop = function (index) {
-					if (isLoopsAssignUncheckedValid($scope.surveyInfo.loopsAssign))
-						$scope.surveyInfo.loopsAssign[index].checked = false;
+					if (isLoopsAssignUncheckedValid($scope.surveyInfo.loops))
+						$scope.surveyInfo.loops[index].checked = false;
 				};
 
 				$scope.saveLoopsAssign = function () {
-					if (isLoopsAssignPopupValid($scope.loopsAssignCopy)) {
-						angular.copy($scope.loopsAssignCopy, $scope.surveyInfo.loopsAssign);
+					if (isLoopsAssignPopupValid($scope.loopsCopy)) {
+						angular.copy($scope.loopsCopy, $scope.surveyInfo.loops);
 						$scope.closeLoopModal();
 					}
 				};
@@ -200,10 +200,7 @@ angular.module('loop.directives.survey', [])
 				function isLoopsAssignUncheckedValid(array) {
 					var checkedCounter = CreateSurveyService.countCheckedChoices(array);
 					if (checkedCounter == 1) {
-						$ionicPopup.alert({
-							title: 'Alert',
-							template: 'Must post the survey to at least one loop or make it public.'
-						});
+						PopupService.alertCustom("Invalid Loops", "Must post the survey to at least one loop or make it public");
 						return false;
 					}
 					return true;
@@ -212,10 +209,7 @@ angular.module('loop.directives.survey', [])
 				function isLoopsAssignPopupValid(array) {
 					var checkedCounter = CreateSurveyService.countCheckedChoices(array);
 					if (checkedCounter == 0) {
-						$ionicPopup.alert({
-							title: 'Alert',
-							template: 'Must post the survey to at least one loop or make it public.'
-						});
+						PopupService.alertCustom("Invalid Loops", "Must post the survey to at least one loop or make it public");
 						return false;
 					}
 					return true;
@@ -229,7 +223,7 @@ angular.module('loop.directives.survey', [])
 				});
 
 				$scope.openLoopModal = function () {
-					angular.copy($scope.surveyInfo.loopsAssign, $scope.loopsAssignCopy);
+					angular.copy($scope.surveyInfo.loops, $scope.loopsCopy);
 					$scope.loopModal.show();
 				};
 
@@ -245,7 +239,7 @@ angular.module('loop.directives.survey', [])
 				});
 
 				$scope.openAttributesModal = function () {
-					angular.copy($scope.surveyInfo.attributesAssign, $scope.attributesAssignCopy);
+					angular.copy($scope.surveyInfo.attributes, $scope.attributesCopy);
 					$scope.attributesModal.show();
 				};
 
