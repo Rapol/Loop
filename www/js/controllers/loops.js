@@ -1,6 +1,6 @@
 var App = angular.module('loop.controllers.loops', []);
 
-App.controller('myLoopsController', ['$scope', 'Loop', function ($scope, Loop) {
+App.controller('myLoopsController', ['$scope', '$ionicScrollDelegate', 'Loop', function ($scope, $ionicScrollDelegate, Loop) {
 
 	$scope.loops = Loop.publicLoops;
 

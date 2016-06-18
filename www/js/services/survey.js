@@ -26,7 +26,7 @@ App.service('Survey', function (RequestService) {
 	};
 
 	self.load = function (query) {
-		if(query){
+		if (query) {
 			self.query = query;
 			self.page = 0;
 		}
@@ -38,18 +38,59 @@ App.service('Survey', function (RequestService) {
 			popularity: self.query.popularity
 		};
 
-		return RequestService.get('survey', params)
+		return RequestService.get('surveys', params)
 			.success(function (data) {
 				self.isLoading = false;
-				if(data.length == 0)
+				if (data.length == 0)
 					self.hasMore = false;
-				return self.results;
+				return data;
 			})
 			.error(function (data, status, headers, config) {
 				self.isLoading = false;
 				return data;
 			});
 	};
+});
+
+App.service('MySurvey', function (Session, RequestService) {
+	var self = this;
+	// store all surveyTypes (like a cache)
+	var surveys = {};
+	// used to check if survey cache is stale
+	var lastUser = Session.getId();
+	self.isLoading = false;
+
+	this.load = function (query) {
+		if(lastUser != Session.getId())
+			surveys = {};
+		if(surveys[query.status + '' + query.type])
+			return Promise.resolve(surveys[query.status + '' + query.type]);
+		else{
+			return getSurveys(query);
+		}
+	};
+
+	this.refresh = function (query) {
+		return getSurveys(query);
+	};
+
+	function getSurveys(query){
+		self.isLoading = true;
+		return RequestService.get('users/' + Session.getId() + '/surveys', query, true).then(function (res) {
+				res.data = res.data.map(function (survey) {
+					survey.status = 'draft';
+					return survey;
+				});
+				surveys[query.status + '' + query.type] = res.data;
+				return res.data;
+			})
+			.catch(function (data, status, headers, config) {
+				// return empty array
+				return [];
+			}).finally(function () {
+				self.isLoading = false;
+			});
+	}
 });
 
 App.service('CreateSurveyService', function ($ionicActionSheet, $state) {
@@ -356,7 +397,7 @@ App.service('SharedSurvey', function () {
 
 	resetSurvey();
 
-	function resetSurvey(){
+	function resetSurvey() {
 		survey = {
 			questions: [
 				{

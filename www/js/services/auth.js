@@ -4,18 +4,18 @@ angular.module('loop.services.auth', [])
 
 		this.login = function (credentials) {
 			return RequestService
-				.post('user/login', credentials, true)
+				.post('users/login', credentials, true)
 				.then(function (res) {
-					Session.create(res.data.token, res.data.firstName, res.data.lastName);
+					Session.create(res.data.id, res.data.token, res.data.firstName, res.data.lastName);
 					return res;
 				});
 		};
 
 		this.signUp = function (credentials) {
 			return RequestService
-				.post('user/signup', credentials, true)
+				.post('users/signup', credentials, true)
 				.then(function (res) {
-					Session.create(res.data.token, res.data.firstName, res.data.lastName);
+					Session.create(res.data.id, res.data.token, res.data.firstName, res.data.lastName);
 					return res;
 				});
 		};
@@ -30,7 +30,8 @@ angular.module('loop.services.auth', [])
 
 	})
 	.service('Session', function () {
-		this.create = function (token, firstName, lastName) {
+		this.create = function (id, token, firstName, lastName) {
+			localStorage.setItem("id", id);
 			localStorage.setItem("token", token);
 			localStorage.setItem("firstName", firstName);
 			localStorage.setItem("lastName", lastName);
@@ -41,6 +42,10 @@ angular.module('loop.services.auth', [])
 
 		this.getToken = function(){
 			return localStorage.getItem("token");
+		};
+
+		this.getId = function(){
+			return localStorage.getItem("id");
 		};
 
 		this.getFirstName = function(){

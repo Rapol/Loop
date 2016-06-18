@@ -48,7 +48,7 @@ App.controller('sidebarController', ['$scope', '$state', '$ionicSideMenuDelegate
 
 	$scope.$on('$ionicView.enter', function () {
 		$scope.user.firstName = Session.getFirstName();
-		$scope.user.lastName = Session.getFirstName();
+		$scope.user.lastName = Session.getLastName();
 	});
 
 	$scope.signOut = function () {

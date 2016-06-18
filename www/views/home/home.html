@@ -29,7 +29,7 @@
             <div class="item item-avatar item-header-padding avatar-centralized avatar-large">
                 <img ng-src="{{survey.img}}" ui-sref="app.loopProfile">
 
-                <div class="item-header-text" ng-click="goToSurvey($index)">
+                <div class="item-header-text" ui-sref="surveyFlow({surveyId: {{survey.id}} })">
                     <h2>{{survey.name}}</h2>
 
                     <h3>{{survey.loopName}}</h3>
@@ -44,15 +44,15 @@
                     </p>
                 </div>
             </div>
-            <div class="item item-body item-body-survey" ng-click="goToSurvey($index)">
+            <div class="item item-body item-body-survey" ui-sref="surveyFlow({surveyId: {{survey.id}} })">
                 <p ng-if="survey.description">
                     {{survey.description}}
                 </p>
                 <p ng-if="!survey.description">
-                    {{survey.questions[0].title}}
+                    {{survey.questionTitle}}
                 </p>
                 <span class="badge badge-energized">{{survey.questionCount}}</span>
-                <p>5 minutes ago &middot; Atlanta, GA</p>
+                <p>{{survey.createdOn | date:'short'}} &middot; Atlanta, GA</p>
             </div>
         </div>
         <ion-infinite-scroll on-infinite="onInfinite()" immediate-check="false" ng-if="hasMore"></ion-infinite-scroll>

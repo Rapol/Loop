@@ -99,3 +99,9 @@ ion-popover-view.fit {
     border-top: none;
   }
 }
+
+.no-wrap{
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}

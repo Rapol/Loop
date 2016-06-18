@@ -62,8 +62,7 @@
 
                     <p>{{item.loop}}</p>
                 </ion-item>
-                <p ng-show="!filteredValues.length" class="sidebar-result-message text-center"><i
-                        class="icon ion-sad-outline"></i> <br> No Results</p>
+                <no-results ng-show="!filteredValues.length" message='No results'></no-results>
             </ion-list>
         </ion-content>
     </ion-side-menu>

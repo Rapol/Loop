@@ -1,5 +1,10 @@
 angular.module('loop.controllers.login', [])
-	.controller('loginController', ['$scope', '$state', '$ionicViewSwitcher', 'PopupService', 'AuthService', function ($scope, $state, $ionicViewSwitcher, PopupService, AuthService) {
+	.controller('loginController', ['$scope', '$state', '$ionicHistory', 'PopupService', 'AuthService', function ($scope, $state, $ionicHistory, PopupService, AuthService) {
+		$scope.$on("$ionicView.enter", function () {
+			$ionicHistory.clearCache();
+			$ionicHistory.clearHistory();
+		});
+		
 		$scope.user = {};
 		var message = '';
 
@@ -8,7 +13,6 @@ angular.module('loop.controllers.login', [])
 				return;
 			AuthService.login($scope.user)
 				.then(function (res) {
-					$ionicViewSwitcher.nextDirection('forward');
 					$state.go('app.home');
 				}
 			).catch(function (err) {

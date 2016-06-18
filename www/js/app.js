@@ -24,11 +24,11 @@ angular.module('App',
 		});
 	})
 	.constant("constants", {
-		"url": "http://rapol.xyz/loop/",
-		"port": "5000"
+		// "url": "http://rapol.xyz/loop/"
+		"url": "http://localhost:5000/"
 	});
 
-function initApp($ionicPlatform, $rootScope, $state, $ionicLoading, AuthService) {
+function initApp($ionicPlatform, $rootScope, $state, $ionicLoading, AuthService, PopupService) {
 	$ionicPlatform.ready(function () {
 		// Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
 		// for form inputs)
@@ -47,6 +47,7 @@ function initApp($ionicPlatform, $rootScope, $state, $ionicLoading, AuthService)
 	});
 
 	$rootScope.$on('$stateChangeStart', function (event, toState) {
+		// Check if page needs authentication
 		if (AuthService.isProtected(toState.name)) {
 			if (!AuthService.isAuthenticated()) { // Check if user allowed to transition
 				event.preventDefault(); // Prevent migration to default state
@@ -67,6 +68,12 @@ function initApp($ionicPlatform, $rootScope, $state, $ionicLoading, AuthService)
 
 	$rootScope.$on('auth.unauthorized', function () {
 		$state.go('login');
+	});
+
+	$rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+		if(error.code == 'CONNECTION_ERROR'){
+			PopupService.alert('genericError');
+		}
 	});
 }
 
@@ -105,8 +112,16 @@ function initRoutes($stateProvider, $urlRouterProvider) {
 		})
 		.state('app.surveyStats', {
 			url: '/surveyStats',
-			templateUrl: 'views/survey/surveyStats.html',
+			templateUrl: 'views/survey/surveyStats/surveyStats.html',
 			controller: 'surveyStatsController'
+		})
+		.state('app.textResults', {
+			url: '/textResults',
+			templateUrl: 'views/survey/surveyStats/textResults.html',
+		})
+		.state('app.questionResults', {
+			url: '/questionResults',
+			templateUrl: 'views/survey/surveyStats/questionResults.html',
 		})
 		.state('app.loops', {
 			url: '/loops',
@@ -129,8 +144,8 @@ function initRoutes($stateProvider, $urlRouterProvider) {
 			templateUrl: 'views/survey/createSurvey/createSurvey.html',
 			controller: 'createSurveyController',
 			resolve: {
-				loops: function ($q, RequestService) {
-					return RequestService.get('/user/loops', {}, true)
+				loops: function ($q, Session, RequestService) {
+					return RequestService.get('users/' + Session.getId() + '/loops', {}, true)
 						.then(function (res) {
 							var result = [];
 							res.data.forEach(function (item) {
@@ -146,7 +161,7 @@ function initRoutes($stateProvider, $urlRouterProvider) {
 						});
 				},
 				attributes: function ($q, RequestService) {
-					return RequestService.get('/user/attributes', {}, true)
+					return RequestService.get('users/attributes', {}, true)
 						.then(function (res) {
 							var result = [];
 							res.data.forEach(function (item) {
@@ -198,7 +213,17 @@ function initRoutes($stateProvider, $urlRouterProvider) {
 			url: '/surveyFlow/:surveyId',
 			cache: false,
 			templateUrl: 'views/survey/surveyFlow.html',
-			controller: 'surveyFlowController'
+			controller: 'surveyFlowController',
+			resolve: {
+				survey: function ($q, $stateParams, RequestService) {
+					return RequestService.get('surveys/' + $stateParams.surveyId + '/questions', {}, true)
+						.then(function (res) {
+							return res.data;
+						}).catch(function (err) {
+							return $q.reject({code: "CONNECTION_ERROR"});
+						});
+				}
+			}
 		})
 		.state('app.profile', {
 			url: '/profile',

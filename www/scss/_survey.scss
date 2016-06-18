@@ -1,8 +1,8 @@
-.card-answer{
+.card-answer {
   padding-top: 5vh;
 }
 
-.question-required{
+.question-required {
   text-align: center;
   background-color: #fff;
   padding-top: 8px;
@@ -23,7 +23,7 @@
   }
   .list .item {
     margin: 10px 5px;
-    .item-reorder{
+    .item-reorder {
       -moz-transition: none;
       -webkit-transition: none;
       transition: none;
@@ -44,7 +44,7 @@
   width: 25px;
   height: 100%;
   background-color: #F5F5F5;
-  h1{
+  h1 {
     text-align: center;
     padding-top: 5px;
     font-size: 20px;
@@ -61,14 +61,14 @@
   margin-top: 20px;
 }
 
-.checkbox-energized input:before, .checkbox-energized .checkbox-icon:before{
+.checkbox-energized input:before, .checkbox-energized .checkbox-icon:before {
   border-color: #ddd;
 }
 
-.label-subdued{
+.label-subdued {
   padding-top: 3px;
   padding-right: 5px;
-  > span{
+  > span {
     font-size: 12px;
     color: #888;
   }
@@ -92,36 +92,34 @@ span.circle-number {
   font-size: 20px;
 }
 
+.choice-detail {
+  padding: 0 0 0 10px;
+  .choice-bar {
+    display: inline-block;
+    height: 10px;
+    padding-right: 10px;
+    background-color: $energized;
+  }
+  .choice-percentage {
+    display: inline-block;
+  }
+}
+
 .rank-list {
-  h2{
-    font-size: 18px;
+  width: 60%;
+  max-width: 250px;
+  margin: 0 auto;
+  h2 {
+    font-size: 16px;
     margin-bottom: 10px;
     background-color: $stable;
-    padding: 5px;
-    border-radius: 10%;
-    span{
+    padding: 5px 0px;
+    span {
       background-color: $energized;
       color: #fff;
       padding: 5px;
       border-radius: 10%;
       margin-right: 5px;
-    }
-  }
-}
-
-.slider-average {
-  text-align: center;
-  h1{
-    font-size: 24px;
-    span{
-      font-size: 24px;
-      display: inline-block;
-      border-radius: 50%;
-      background-color: $energized;
-      width: 2em;
-      line-height: 2em;
-      margin-left: 10px;
-      color: #fff;
     }
   }
 }

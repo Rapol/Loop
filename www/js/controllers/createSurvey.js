@@ -115,7 +115,7 @@ angular.module('loop.controllers.createSurvey', [])
 			};
 
 			$scope.createSurvey = function () {
-				RequestService.post('survey', CreateSurveyService.getSurvey(), true)
+				RequestService.post('surveys', CreateSurveyService.getSurvey(), true)
 					.then(function (res) {
 						PopupService.show("surveyCreated");
 						CreateSurveyService.resetSurvey();

@@ -80,5 +80,11 @@ angular.module('loop.directives.utils', [])
 				}
 			};
 		}
-	]);
-;
+	]).directive('noResults', function() {
+	return {
+		scope: {
+			message: '@message'
+		},
+		template: '<p class="sidebar-result-message text-center"><i class="icon ion-sad-outline"></i> <br>{{message}}</p>'
+	};
+});

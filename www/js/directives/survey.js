@@ -335,19 +335,28 @@ angular.module('loop.directives.survey', [])
 	.directive('draftSurveyItem', [function () {
 		return {
 			restrict: 'E',
-			templateUrl: "views/survey/mySurveys/draftSurveyItem.html"
+			templateUrl: "views/survey/mySurveys/draftSurveyItem.html",
+			scope: {
+				survey: "="
+			}
 		}
 	}])
 	.directive('completedSurveyItem', [function () {
 		return {
 			restrict: 'E',
-			templateUrl: "views/survey/mySurveys/completedSurveyItem.html"
+			templateUrl: "views/survey/mySurveys/completedSurveyItem.html",
+			scope: {
+				survey: "="
+			}
 		}
 	}])
 	.directive('openSurveyItem', [function () {
 		return {
 			restrict: 'E',
-			templateUrl: "views/survey/mySurveys/openSurveyItem.html"
+			templateUrl: "views/survey/mySurveys/openSurveyItem.html",
+			scope: {
+				survey: "="
+			}
 		}
 	}])
 	.directive('surveyEdit', [function () {
@@ -365,6 +374,46 @@ angular.module('loop.directives.survey', [])
 				$scope.onQuestionDelete = function (choice) {
 					$scope.survey.questions.splice($scope.survey.questions.indexOf(choice), 1);
 				};
+			}
+		}
+	}])
+	.directive('choiceStats', [function () {
+		return {
+			restrict: 'E',
+			templateUrl: "views/questions/stats/choices.html",
+			scope: {
+				answer: "=",
+				number: "@"
+			}
+		}
+	}])
+	.directive('rankStats', [function () {
+		return {
+			restrict: 'E',
+			templateUrl: "views/questions/stats/ranking.html",
+			scope: {
+				answer: "=",
+				number: "@"
+			}
+		}
+	}])
+	.directive('textBoxStats', [function () {
+		return {
+			restrict: 'E',
+			templateUrl: "views/questions/stats/textBox.html",
+			scope: {
+				answer: "=",
+				number: "@"
+			}
+		}
+	}])
+	.directive('numberBoxStats', [function () {
+		return {
+			restrict: 'E',
+			templateUrl: "views/questions/stats/numberBox.html",
+			scope: {
+				answer: "=",
+				number: "@"
 			}
 		}
 	}]);
