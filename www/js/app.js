@@ -2,7 +2,6 @@ angular.module('App',
 	[
 		'ionic',
 		'ngCordova',
-		'ngResource',
 		'chart.js',
 		'loop.controllers',
 		'loop.services',
@@ -126,7 +125,25 @@ function initRoutes($stateProvider, $urlRouterProvider) {
 		.state('app.loops', {
 			url: '/loops',
 			templateUrl: 'views/loops/myLoops.html',
-			controller: 'myLoopsController'
+			controller: 'myLoopsController',
+			resolve: {
+				loops: function ($q, Session, RequestService) {
+					return RequestService.get('users/' + Session.getId() + '/loops', {}, true)
+						.then(function (res) {
+							var result = [];
+							res.data.forEach(function (item) {
+								result.push({
+									name: item.Name,
+									loopId: item.LoopId,
+									checked: false
+								})
+							});
+							return result;
+						}).catch(function (err) {
+							return $q.reject({code: "CONNECTION_ERROR"});
+						});
+				}
+			}
 		})
 		.state('app.loopProfile', {
 			url: '/loopProfile',

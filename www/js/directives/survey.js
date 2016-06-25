@@ -299,6 +299,8 @@ angular.module('loop.directives.survey', [])
 				question: "="
 			},
 			controller: function ($scope) {
+				console.log($scope.question.scale.steps)
+				$scope.question.scale.steps = $scope.question.scale.steps.reverse();
 				$scope.question.scale.selected = Math.round($scope.question.scale.steps.length / 2);
 
 			}

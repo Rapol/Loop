@@ -1,8 +1,8 @@
 var App = angular.module('loop.controllers.loops', []);
 
-App.controller('myLoopsController', ['$scope', '$ionicScrollDelegate', 'Loop', function ($scope, $ionicScrollDelegate, Loop) {
+App.controller('myLoopsController', ['$scope', '$ionicScrollDelegate', 'Loop', 'loops', function ($scope, $ionicScrollDelegate, Loop, loops) {
 
-	$scope.loops = Loop.publicLoops;
+	$scope.loops = loops;
 
 	$scope.locationTabs = ['Public', 'Private'];
 
@@ -11,9 +11,9 @@ App.controller('myLoopsController', ['$scope', '$ionicScrollDelegate', 'Loop', f
 	$scope.onClickTab = function (tab) {
 		$scope.currentTab = tab;
 		if ($scope.currentTab == $scope.locationTabs[0])
-			$scope.loops = Loop.publicLoops;
+			$scope.loops = loops;
 		else
-			$scope.loops = Loop.privateLoops;
+			$scope.loops = loops;
 		$ionicScrollDelegate.$getByHandle('mainScroll').scrollTop();
 	};
 
